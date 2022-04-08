@@ -1,4 +1,4 @@
-## Lab 02. PHP Variables & HTML Input Form
+# Lab 02. PHP Variables & HTML Input Form
 
 ### 2.9.Exercise
 
