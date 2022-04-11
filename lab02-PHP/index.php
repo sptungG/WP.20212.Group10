@@ -19,7 +19,7 @@
     </div>
 
     <div class="text-field">
-      <label for="email">Last name</label>
+      <label for="email">Email</label>
       <input type="email" id="email" name="email" placeholder="Enter your email..."/>
     </div>
 
