@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="main.css" type="text/css">
   <title>2.9.Exercise</title>
 </head>
+
 <body>
 <div class="wrapper">
   <h2 class="form-title">Your Profile</h2>
@@ -54,7 +55,9 @@
       <button type="submit" class="btn btn-submit">Click to submit</button>
       <button type="reset" class="btn btn-reset">Reset</button>
     </div>
+
   </form>
 </div>
+
 </body>
 </html>
