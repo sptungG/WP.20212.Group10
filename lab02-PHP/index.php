@@ -40,7 +40,7 @@
       <label>What topics do you like reading about? (Check all that apply):</label>
       <div class="checkboxes-wrapper">
         <label for="HTML"><input type="checkbox" name="topics[]" id="HTML"
-                                 value="HTML"/> HTML</label>
+            value="HTML"/> HTML</label>
         <label for="CSS"><input type="checkbox" name="topics[]" id="CSS" value="CSS"/> CSS</label>
         <label for="PHP"><input type="checkbox" name="topics[]" id="PHP" value="PHP"/> PHP</label>
         <label for="WordPress">
@@ -48,7 +48,6 @@
           WordPress</label>
       </div>
     </div>
-
 
 
     <div class="form-action">

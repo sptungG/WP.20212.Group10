@@ -11,15 +11,15 @@
 <div class="wrapper">
   <h2>Form Results</h2>
   <div class="results-wrapper">
-      <?php
-      foreach ($_POST as $name => $value) {
-          if (is_array($value)) {
-              echo '<p><strong>' . ucfirst($name) . ':</strong> ' . implode(', ', $value) . '</p>';
-          } else {
-              echo '<p><strong>' . ucfirst($name) . ':</strong> ' . $value . '</p>';
-          }
+    <?php
+    foreach ($_POST as $name => $value) {
+      if (is_array($value)) {
+        echo '<p><strong>' . ucfirst($name) . ':</strong> ' . implode(', ', $value) . '</p>';
+      } else {
+        echo '<p><strong>' . ucfirst($name) . ':</strong> ' . $value . '</p>';
       }
-      ?>
+    }
+    ?>
   </div>
 </div>
 </body>
