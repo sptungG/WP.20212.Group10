@@ -23,6 +23,11 @@
       <input type="email" id="email" name="email" placeholder="Enter your email..."/>
     </div>
 
+    <div class="text-field">
+      <label for="fullName"> University </label>
+      <input type="text" id="university" name="university" placeholder="Enter your university..."/>
+    </div>
+
     <div class="form-group">
       <label>Gender?:</label>
       <div class="radios-wrapper">
@@ -47,6 +52,14 @@
           <input type="checkbox" name="topics[]" id="WordPress" value="WordPress"/>
           WordPress</label>
       </div>
+    </div>
+
+    <div class="text-field">
+      <label for="Hobby"> Hobby</label>
+      <textarea id="w3review" name="Hobby" rows="4" cols="50">
+play badminton, baseball, ...
+      </textarea>
+  
     </div>
 
 
