@@ -24,8 +24,13 @@
     </div>
 
     <div class="text-field">
-      <label for="fullName"> University </label>
-      <input type="text" id="university" name="university" placeholder="Enter your university..."/>
+      <label for="university"> University </label>
+      <select name="university" id="university" placeholder="Select your university...">
+        <option value="HUST">HUST</option>
+        <option value="NEU">NEU</option>
+        <option value="FTU">FTU</option>
+        <option value="HaNa">HaNa</option>
+      </select>
     </div>
 
     <div class="form-group">
@@ -44,19 +49,21 @@
     <div class="form-group">
       <label>Your school:</label>
       <div class="checkboxes-wrapper">
-        <label for="SoIct"><input type="checkbox" name="topics[]" id="SoIct"
+        <label for="SoIct"><input type="checkbox" name="schools[]" id="SoIct"
             value="SoIct"/> SoIct</label>
-        <label for="Physic"><input type="checkbox" name="topics[]" id="Physic" value="Physic"/> Physic</label>
-        <label for="Chemistry"><input type="checkbox" name="topics[]" id="Chemistry" value="Chemistry"/> Chemistry</label>
+        <label for="Physic"><input type="checkbox" name="schools[]" id="Physic" value="Physic"/> Physic</label>
+        <label for="Chemistry"><input type="checkbox" name="schools[]" id="Chemistry" value="Chemistry"/> Chemistry</label>
         <label for="Other">
-          <input type="checkbox" name="topics[]" id="Other" value="Other"/>
+          <input type="checkbox" name="schools[]" id="Other" value="Other"/>
           Other</label>
       </div>
     </div>
 
+
+
     <div class="text-field">
       <label for="Bio"> Bio</label>
-      <textarea id="w3review" name="Bio" rows="4" cols="50">
+      <textarea id="Bio" name="Bio" rows="4" cols="50">
 
       </textarea>
   
