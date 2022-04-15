@@ -42,22 +42,22 @@
     </div>
 
     <div class="form-group">
-      <label>What topics do you like reading about? (Check all that apply):</label>
+      <label>Your school:</label>
       <div class="checkboxes-wrapper">
-        <label for="HTML"><input type="checkbox" name="topics[]" id="HTML"
-            value="HTML"/> HTML</label>
-        <label for="CSS"><input type="checkbox" name="topics[]" id="CSS" value="CSS"/> CSS</label>
-        <label for="PHP"><input type="checkbox" name="topics[]" id="PHP" value="PHP"/> PHP</label>
-        <label for="WordPress">
-          <input type="checkbox" name="topics[]" id="WordPress" value="WordPress"/>
-          WordPress</label>
+        <label for="SoIct"><input type="checkbox" name="topics[]" id="SoIct"
+            value="SoIct"/> SoIct</label>
+        <label for="Physic"><input type="checkbox" name="topics[]" id="Physic" value="Physic"/> Physic</label>
+        <label for="Chemistry"><input type="checkbox" name="topics[]" id="Chemistry" value="Chemistry"/> Chemistry</label>
+        <label for="Other">
+          <input type="checkbox" name="topics[]" id="Other" value="Other"/>
+          Other</label>
       </div>
     </div>
 
     <div class="text-field">
-      <label for="Hobby"> Hobby</label>
-      <textarea id="w3review" name="Hobby" rows="4" cols="50">
-play badminton, baseball, ...
+      <label for="Bio"> Bio</label>
+      <textarea id="w3review" name="Bio" rows="4" cols="50">
+
       </textarea>
   
     </div>
