@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "xdebug.php-debug",
+    "zobo.php-intellisense",
+    "brapifra.phpserver",
+    "xdebug.php-pack",
+    "sophisticode.php-formatter",
+    "valeryanm.vscode-phpsab"
+  ]
+}
