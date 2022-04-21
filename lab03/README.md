@@ -27,3 +27,5 @@ Create a DateTimeFunction.php to do the following jobs:
   * Display in two dates in letter (E.g. Friday, December 12, 2008) for each person
   * Calculate the difference in days between two dates.
   * Calculate how old are they, the difference years between two persons
+
+![image](https://user-images.githubusercontent.com/61298021/164480390-33a02cc7-94f9-4193-a356-b46b8067bf84.png)
