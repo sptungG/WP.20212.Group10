@@ -19,6 +19,8 @@ Write a function to convert radians to degrees and vice versa.
 
 Write .php file allowing users to enter 1 factor, and print the other factor.
 
+![image](https://user-images.githubusercontent.com/61298021/164566595-5247e00b-0863-4f71-b27c-214f1e7bc105.png)
+
 ### 3.3. DateTimeFunction
 Create a DateTimeFunction.php to do the following jobs:
 * Allows users enter two names and their birthdays in number (E.g. 12/12/2008)
