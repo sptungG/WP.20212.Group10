@@ -13,6 +13,7 @@
   .form-wrapper {
     width: 100%;
     max-width: max-content;
+    margin-bottom: 32px;
   }
 
   .form-container {
@@ -35,7 +36,7 @@
 
   .btn-submit {
     width: 100%;
-    margin-top: 24px;
+    margin-top: 8px;
     padding: 8px;
   }
 

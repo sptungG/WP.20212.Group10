@@ -28,4 +28,4 @@ Create a DateTimeFunction.php to do the following jobs:
   * Calculate the difference in days between two dates.
   * Calculate how old are they, the difference years between two persons
 
-![image](https://user-images.githubusercontent.com/61298021/164480390-33a02cc7-94f9-4193-a356-b46b8067bf84.png)
+![image](https://user-images.githubusercontent.com/61298021/164484215-2cb98d01-7f83-409a-a650-dc8be52f9ad2.png)
