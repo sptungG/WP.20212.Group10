@@ -42,8 +42,12 @@ $type = $_POST["type"] ?? "";
   <h3>Radians or degrees</h3>
   <form method="post" class="form-container">
     <div class="radios-group">
-      <label for="r-to-d"><input type="radio" id="r-to-d" name="type" value="r-to-d" <?php echo ($type == "r-to-d") ?  "checked" : "";  ?>> Radians to Degrees</label>
-      <label for="d-to-r"><input type="radio" id="d-to-r" name="type" value="d-to-r" <?php echo ($type == "d-to-r") ?  "checked" : "";  ?>> Degrees to Radians </label>
+      <label for="r-to-d">
+        <input type="radio" id="r-to-d" name="type" value="r-to-d" <?php echo ($type == "r-to-d") ?  "checked" : "";  ?>> Radians to Degrees
+      </label>
+      <label for="d-to-r">
+        <input type="radio" id="d-to-r" name="type" value="d-to-r" <?php echo ($type == "d-to-r") ?  "checked" : "";  ?>> Degrees to Radians
+      </label>
     </div>
     <div class="form-group">
       <label for="number">Number</label>
@@ -54,13 +58,11 @@ $type = $_POST["type"] ?? "";
   <?php
   $number = $_POST["number"] ?? "";
 
-  function R_to_D($radians)
+  function convertTo($number, $type = "d")
   {
-    return $radians * (180 / pi());
-  }
-  function D_to_R($degrees)
-  {
-    return $degrees * pi() / 180;
+    if ($type == "d") return $number * (180 / pi());
+    if ($type == "r") return $number * pi() / 180;
+    return 0;
   }
 
   if ($number == "" || empty($_POST["type"])) {
@@ -68,9 +70,9 @@ $type = $_POST["type"] ?? "";
   } else {
     $type = $_POST["type"];
     if ($type == "r-to-d") {
-      print "<div>Convert to degrees: " . R_to_D($number) . "</div>";
+      print "<div>Convert to degrees: " . convertTo($number, "d") . "</div>";
     } else {
-      print "<div>Convert to radians: " . D_to_R($number) . "</div>";
+      print "<div>Convert to radians: " . convertTo($number, "r") . "</div>";
     }
   }
   ?>
