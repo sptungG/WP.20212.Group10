@@ -35,7 +35,7 @@ if (array_key_exists("submitted", $_POST)) {
 }
 ?>
 
-<form action="4.1-UserSorting.php" method="post">
+<form action="4.4-UserSorting.php" method="post">
     <p>
         <input type="radio" name="sort_type" value="sort" <?php echo $sort_type == "sort" ? "checked" : "" ?>>
         <label>Standard sort </label>
