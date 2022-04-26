@@ -33,6 +33,17 @@ if (array_key_exists("submitted", $_POST)) {
         }
     }
 }
+$sortTypes['sort']='Standard sort';
+$sortTypes['rsort']='Reverse sort';
+$sortTypes['usdort']='User-defined sort';
+$sortTypes['ksort']='Key sort';
+$sortTypes['krsort']='Reverse key sort';
+$sortTypes['uksort']='User-defined key sort';
+$sortTypes['asort']='Value sort';
+$sortTypes['usort']='Reverse value sort';
+$sortTypes['uasort']='User-defined value sort';
+
+
 ?>
 
 <form action="4.4-UserSorting.php" method="post">
@@ -43,7 +54,7 @@ if (array_key_exists("submitted", $_POST)) {
         <input type="radio" name="sort_type" value="rsort" <?php echo $sort_type == "rsort" ? "checked" : "" ?>>
         <label>Reverse sort</label>
         <br>
-        <input type="radio" name="sort_type" value="usort" <?php echo $sort_type == "usort" ? "checked" : "" ?>>
+        <input type="radio" name="sort_type" value="usort" <?php echo $sort_type == "usdort" ? "checked" : "" ?>>
         <label>User-defined sort</label>
         <br>
         <input type="radio" name="sort_type" value="ksort" <?php echo $sort_type == "ksort" ? "checked" : "" ?>>
@@ -79,7 +90,7 @@ if (array_key_exists("submitted", $_POST)) {
     </ul>
     <?php
     if ($submitted) {
-        print "<p>Values sorted by $sort_type : </p>";
+        print "<p>Values sorted by $sortTypes[$sort_type] : </p>";
         print "<ul>";
         foreach ($values as $key => $value) {
             print "<li><b>$key</b>: $value</li>";
