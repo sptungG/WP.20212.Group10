@@ -24,3 +24,5 @@ Represented as a UML diagram, the Page class is shown in the following figure:
 Write classes and web pages to generate several different pages and save/display them in a web browser.
 
 Demo:
+
+![image](https://user-images.githubusercontent.com/61298021/165584935-86c3051e-561c-429b-9645-f51c421f20b2.png)
