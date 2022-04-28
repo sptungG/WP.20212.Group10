@@ -18,48 +18,39 @@ $users = array(
     'age' => 32, 'smarts' => 'some'
 );
 
-$users_sorted = $users;
-
-$sort_types = array(
+$sort_type_list = array(
     'sort' => 'Standard sort',
     'rsort' => 'Reverse sort',
-    'uasort' => 'User-defined sort',
+    'usort' => 'User-defined sort',
     'ksort' => 'Key sort',
     'krsort' => 'Reverse key sort',
     'uksort' => 'User-defined key sort',
     'asort' => 'Value sort',
-    'usort' => 'Reverse value sort',
+    'arsort' => 'Reverse value sort',
     'uasort' => 'User-defined value sort',
 );
 
-function user_sort($a, $b)
+function get_sorted($sort_type, $arr)
 {
-    // smarts is all-important, so sort it first
-    if ($b == 'smarts') {
-        return 1;
-    } else if ($a == 'smarts') {
-        return -1;
-    }
-    return ($a == $b) ? 0 : (($a < $b) ? -1 : 1);
-}
-
-if (array_key_exists("sort_type", $_POST)) {
-    if ($sort_type == 'usort' || $sort_type == 'uksort' || $sort_type == 'uasort') {
-        $sort_type($users_sorted, 'user_sort');
+    $arr_sorted = $arr;
+    $user_sort_list = array('usort', 'uksort', 'uasort');
+    if (in_array($sort_type, $user_sort_list)) {
+        $sort_type($arr_sorted, function ($a, $b) {return strcmp($a, $b);});
     } else {
-        $sort_type($users_sorted);
+        $sort_type($arr_sorted);
     }
+    return $arr_sorted;
 }
 ?>
 
 <body>
     <form method="post">
         <?php
-        foreach ($sort_types as $type => $name) {
-            if ($sort_type == $type) {
-                echo "<label for=$type>" . "<input id=$type type='radio' name='sort_type' value=$type  checked/>" . $name . "</label>";
+        foreach ($sort_type_list as $key => $name) {
+            if ($sort_type == $key) {
+                echo "<label for=$key>" . "<input id=$key type='radio' name='sort_type' value=$key  checked/>" . $name . "</label>";
             } else {
-                echo "<label for=$type>" . "<input id=$type type='radio' name='sort_type' value=$type />" . $name . "</label>";
+                echo "<label for=$key>" . "<input id=$key type='radio' name='sort_type' value=$key />" . $name . "</label>";
             }
         }
         ?>
@@ -80,9 +71,9 @@ if (array_key_exists("sort_type", $_POST)) {
     <div class="sorted">
         <?php
         if (array_key_exists("sort_type", $_POST)) {
-            echo "<p>Values sorted by $sort_types[$sort_type] : </p>";
+            echo "<p>Values sorted by $sort_type_list[$sort_type] - <i>$sort_type</i> : </p>";
             echo "<ul>";
-            foreach ($users_sorted as $key => $value) {
+            foreach (get_sorted($sort_type, $users) as $key => $value) {
                 echo "<li><b>$key</b>: $value</li>";
             }
             echo "</ul>";
