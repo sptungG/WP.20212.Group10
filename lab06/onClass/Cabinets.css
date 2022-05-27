@@ -1,0 +1,22 @@
+h1 {
+  text-align: center;
+}
+
+p {
+  margin: 0.25in;
+  border: 0.25in solid black;
+  padding: 0.25in;
+  background: url(https://user-images.githubusercontent.com/61298021/170629207-ff78f4fb-befa-4a5f-ae90-4a072f72d767.png);
+}
+
+body {
+  background: url(https://user-images.githubusercontent.com/61298021/170629307-027c21af-d0d5-4660-92e6-81478700a8c9.png);
+  background-size: cover;
+}
+
+.banner {
+  background: url(https://user-images.githubusercontent.com/61298021/170629481-573bf9a2-5305-485c-8863-f39de2ad4a77.png) repeat-x;
+  background-size: contain;
+  font-size: 50pt;
+  font-family: Arial Rounded MT Bold;
+}
