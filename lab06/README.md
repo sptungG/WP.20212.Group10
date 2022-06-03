@@ -49,7 +49,7 @@ After:
     <div><a href="links.html">Links</a></div>
   </div>
   <div class="main-content">
-    <div>My first styled page</div>
+    <div class="content-title">My first styled page</div>
     <div>Welcome to my styled page!</div>
     <div>
       It lacks images, but at least it has style. And it has links, even if they don't go
@@ -67,7 +67,7 @@ After:
 
 DEMO:
 
-![image](https://user-images.githubusercontent.com/61298021/171788531-bf87846a-64bc-4df8-ae47-89dabc66fbf2.png)
+![image](https://user-images.githubusercontent.com/61298021/171789503-58283efe-c54c-42ef-a6b9-b18d0d52c61a.png)
 
 ### 6.5. CSS Box Model
 
@@ -77,8 +77,8 @@ Create other web pages (2-3 web pages) applying this layout and style.
 
 ![image](https://user-images.githubusercontent.com/61298021/171787535-621e26ed-19cc-4618-8b49-91e7a1b78668.png)
 
-
 Code:
+
 ```html
 <header class="header">Header</header>
 <section class="section">

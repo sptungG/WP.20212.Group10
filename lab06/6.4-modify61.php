@@ -18,7 +18,7 @@
       <div><a href="links.html">Links</a></div>
     </div>
     <div class="main-content">
-      <div>My first styled page</div>
+      <div class="content-title">My first styled page</div>
       <div>Welcome to my styled page!</div>
       <div>
         It lacks images, but at least it has style. And it has links, even if they don't go
