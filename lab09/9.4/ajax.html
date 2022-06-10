@@ -1,0 +1,44 @@
+<html>
+
+<head>
+    <script>
+        function getHTTPObject() {
+            if (window.ActiveXObject) {
+                return new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            else if (window.XMLHttpRequest) {
+                return new XMLHttpRequest();
+            }
+            else {
+                alert("Your browser does not support AJAX.");
+                return null;
+            }
+        }
+        function doWork() {
+            httpObject = getHTTPObject();
+            if (httpObject != null) {
+                httpObject.open("GET",
+                    "upperCase.php?inputText="
+                    + document.getElementById(
+                        'inputText').value, true);
+                httpObject.send(null);
+                httpObject.onreadystatechange = setOutput;
+            }
+        }
+        function setOutput() {
+            if (httpObject.readyState == 4) {
+                document.getElementById('outputText').value
+                    = httpObject.responseText;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <form name="testForm">
+        Input text: <input type="text" onkeyup="doWork();" name="inputText" id="inputText" />
+        Output text: <input type="text" name="outputText" id="outputText" />
+    </form>
+</body>
+
+</html>

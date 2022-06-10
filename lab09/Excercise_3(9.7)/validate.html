@@ -1,0 +1,48 @@
+<html>
+
+<head>
+</head>
+
+<body>
+    <form name="myForm" onsubmit="return validateForm()" method="POST" action="#">
+        <label>Username</label><input name="username" type="text" />
+        <label>Email</label><input name="email" type="email" />
+        <label>Telephone</label><input name="telephone" type="tel" />
+        <input type="submit" value="Validate"/>
+    </form>
+    <script>
+        // email regex
+        const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        const phoneRegex =/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
+        function validateForm() {
+            const form = document.forms["myForm"];
+            const username = form["username"].value;
+            if (String(username).trim() == '') {
+                alert("Name must not be blank!");
+                return false;
+            }
+            const email = form["email"].value;
+            if (String(email).trim() == '') {
+                alert("Email must not be blank!");
+                return false;
+            }
+            if (!emailRegex.test(String(email).toLowerCase())) {
+                alert("Email is not in correct format!");
+                return false;
+            }
+            const tel = form["telephone"].value;
+            if (String(tel).trim() == '') {
+                alert("Telephone must not be blank!");
+                return false;
+            }
+            if (!phoneRegex.test(String(tel).toLowerCase())) {
+                alert("Telephone is not in correct format!");
+                return false;
+            }
+            alert("All in correct format!");
+            return true;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    <title>Example Message Box Page</title>
+    <script>
+        function doLoad() {
+            colors = ['red', 'green', 'blue'];
+
+            for (let color of colors) {
+
+                document.getElementById(color).addEventListener("mouseover", () => {
+                    document.getElementById('para').style = `color: ${color}`;
+                }, false);
+                document.getElementById(color).addEventListener("mouseout", () => {
+                    document.getElementById('para').style = `color: black`;
+                }, false);
+
+
+            }
+        }
+        window.addEventListener('load', doLoad, false);
+    </script>
+</head>
+
+<body>
+    <a href="#" id='red'>Red</a>
+    <a href="#" id='green'>Green</a>
+    <a href="#" id='blue'>Blue</a>
+    <p id='para'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. Sit amet est placerat in egestas erat imperdiet sed euismod. Suspendisse ultrices gravida
+        dictum fusce ut placerat.</p>
+</body>
