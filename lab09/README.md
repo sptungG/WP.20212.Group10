@@ -7,7 +7,7 @@ Under the links there should be a small paragraph of text (you make this up) wit
 Using `onMouseOver` and `onMouseOut` events of the links, when a user rolls over the each and any of the color labeled links, the color of the text in the paragraph below should change to the color corresponding to the link the user is hovering over. 
 When the user rolls off the link, the color of the text should go back to it's starting color of BLACK
 
-### 9.2– Inheritance (JS)
+### 9.2 – Inheritance (JS)
 
 Implement and try to understand the following source code
 
