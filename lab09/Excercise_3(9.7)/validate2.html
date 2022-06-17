@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>validate</title>
+  </head>
+  <body>
+    <form id="form-register" name="registerForm">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" />
+      </div>
+      <div class="form-group">
+        <label for="telephone">Telephone</label>
+        <input id="telephone" name="telephone" type="tel" />
+      </div>
+      <button id="form-submit" type="submit">Submit</button>
+      <div id="form-error"></div>
+    </form>
+
+    <div id="form-register-res"></div>
+  </body>
+  <script>
+    const form = document.querySelector("#form-register");
+    const btnSubmit = form.querySelector("#form-submit");
+    const inputUsername = form.querySelector("#username");
+    const inputEmail = form.querySelector("#email");
+    const inputPhone = form.querySelector("#telephone");
+    const errorElement = document.querySelector("#form-error");
+    const resultElement = document.querySelector("#form-register-res");
+
+    const emailRegex =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      let messages = [];
+      if (inputUsername.value === "" || inputUsername.value == null) {
+        messages.push("Username is required");
+      }
+
+      if (inputUsername.value === "username") {
+        messages.push("Username cannot be username");
+      }
+
+      if (!emailRegex.test(String(inputEmail.value).toLowerCase())) {
+        messages.push("Email is not in correct format!");
+      }
+
+      if (!phoneRegex.test(String(inputPhone.value).toLowerCase())) {
+        messages.push("Telephone is not in correct format!");
+      }
+
+      if (messages.length > 0) {
+        errorElement.innerHTML = messages.join(", ");
+      } else
+        resultElement.innerHTML = JSON.stringify({
+          username: inputUsername.value,
+          email: inputEmail.value,
+          phone: inputPhone.value,
+        });
+    });
+  </script>
+</html>
