@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>inheritance_class</title>
+  </head>
+  <body>
+    <script>
+      // Class
+      class Person {
+        constructor(name, age) {
+          this.name = name;
+          this.age = age;
+        }
+        describe() {
+          return console.log(this.name + ", " + this.age + " years old.");
+        }
+      }
+
+      class Student extends Person {
+        constructor(name, age) {
+          super(name, age);
+        }
+        learn(subject) {
+          return console.log(this.name + " just learned " + subject);
+        }
+      }
+
+      class Teacher extends Person {
+        constructor(name, age) {
+          super(name, age);
+        }
+        teach(subject) {
+          return console.log(this.name + " is now teaching " + subject);
+        }
+      }
+
+      console.log("js_inheritance_class");
+
+      const newStudent = new Student("John", 25);
+      newStudent.describe();
+      newStudent.learn("Inheritance");
+
+      const newTeacher = new Teacher("Mary", 30);
+      newTeacher.describe();
+      newTeacher.teach("Web Programming");
+    </script>
+  </body>
+</html>

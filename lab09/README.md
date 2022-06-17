@@ -39,9 +39,13 @@ which receives a string called subject, and prints out:
 
 `[teacher's name] is now teaching [subject]`
 
-Demo:
+Demo prototype:
 
 ![image](https://user-images.githubusercontent.com/61298021/174215544-43f92889-3bef-49b9-96eb-a736ba494be3.png)
+
+Demo class: 
+
+![image](https://user-images.githubusercontent.com/61298021/174217173-fc40f821-7ce2-48f7-bf8b-d74a9d493d49.png)
 
 ### 9.3 – Validate inputs (JS)
 
