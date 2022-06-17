@@ -60,12 +60,14 @@
 
       if (messages.length > 0) {
         errorElement.innerHTML = messages.join(", ");
-      } else
+      } else {
+        errorElement.innerHTML = "";
         resultElement.innerHTML = JSON.stringify({
           username: inputUsername.value,
           email: inputEmail.value,
           phone: inputPhone.value,
         });
+      }
     });
   </script>
 </html>
