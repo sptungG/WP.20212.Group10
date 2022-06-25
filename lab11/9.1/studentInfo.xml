@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE group SYSTEM "student.dtd">
+
+<group>
+    <student>
+        <id> 20184312 </id>
+        <name> Nguyễn Mạnh Tiến </name>
+        <class> ICT.02 K63 </class>
+    </student>
+
+    <student>
+        <id> 20184274 </id>
+        <name> Đỗ Quang Khải </name>
+        <class> ICT.01 K63 </class>
+    </student>
+
+    <student>
+        <id> 20184326 </id>
+        <name> Ngô Việt Tùng </name>
+        <class> ICT.01 K63 </class>
+    </student>
+</group>

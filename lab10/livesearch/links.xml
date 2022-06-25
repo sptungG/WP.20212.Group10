@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pages>
+  <link>
+    <title>Hammer</title>
+    <url>https://www.google.com/search?q=hammer</url>
+  </link>
+  <link>
+    <title>Screw</title>
+    <url>https://www.google.com/search?q=screw</url>
+  </link>
+  <link>
+    <title>Tesla</title>
+    <url>https://www.google.com/search?q=tesla</url>
+  </link>
+  <link>
+    <title>Frying pan</title>
+    <url>https://www.google.com/search?q=frying+pan</url>
+  </link>
+  <link>
+    <title>Air conditioner</title>
+    <url>https://www.google.com/search?q=air+conditioner</url>
+  </link>
+  <link>
+    <title>Everything</title>
+    <url>https://www.google.com/search?q=everything</url>
+  </link>
+</pages>
