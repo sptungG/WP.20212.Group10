@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2/">
+    <Placemark>
+        <name> Home </name>
+        <description> Duy's Home </description>
+        <Point>
+            <coordinates>105.762451, 20.955289</coordinates>
+        </Point>
+    </Placemark>
+</kml>
