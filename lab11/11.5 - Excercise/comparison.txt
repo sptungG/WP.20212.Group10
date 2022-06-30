@@ -1,0 +1,19 @@
+1. Tool support (as of today)
+	Best: DTD
+	Most promising: W3C XML Schema
+	Challenger: RELAX NG
+	Niche: Schematron and Examplotron
+
+2. Features
+	Structures: DTD, W3C XML Schema, RELAX NG, Examplotron.
+	Datatype: W3C XML Schema
+	Integrity: W3C XML Schema, Schematron, Examplotron
+	Rules: Schematron, Examplotron
+
+3. Flexibility (ability to describe a wide range of structures)
+	Most flexible: Schematron (but everything needs to be defined "by hand").
+	Most flexible structure-based language: RELAX NG.
+	Integrity: W3C XML Schema, Schematron, Examplotron
+	Challenger: Examplotron
+	Behind: W3C XML Schema
+	Least flexible: DTD (lack of namespace support)

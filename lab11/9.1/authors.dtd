@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!DOCTYPE authors [
-<!ELEMENT authors(name)*>
-<!ELEMENT name(firstname, lastname)>
-<!ELEMENT firstname(#PCDATA)>
-<!ELEMENT lastname(#PCDATA)>
-]> 

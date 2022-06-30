@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg [
+        <!ELEMENT svg (circle)*>
+        <!ATTLIST svg
+                xmlns CDATA #REQUIRED
+                width CDATA #REQUIRED
+                height CDATA #REQUIRED>
+        <!ELEMENT circle (#PCDATA)>
+        <!ATTLIST circle
+                cx CDATA #REQUIRED
+                cy CDATA #REQUIRED
+                r CDATA #REQUIRED
+                stroke CDATA #REQUIRED
+                stroke-width CDATA #REQUIRED
+                fill CDATA #REQUIRED>
+        ]>
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">
+    <circle cx="100" cy="100" r="50" stroke="black" stroke-width="5" fill="red"/>
+</svg>

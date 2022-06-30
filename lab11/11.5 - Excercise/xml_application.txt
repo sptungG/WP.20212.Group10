@@ -1,0 +1,22 @@
+* XML APPLICATIONS: XUL, EPUB, ATOM, Android SDK, XBRL …
+	+ Web publishing: XML allows you to create interactive pages, allows the customer to customize those pages, and makes creating e-commerce applications more intuitive. With XML, you store the data once and then render that content for different viewers or devices based on style sheet processing using an Extensible Style Language (XSL)/XSL Transformation (XSLT) processor.
+	+ General applications: XML provides a standard method to access information, making it easier for applications and devices of all kinds to use, store, transmit, and display data.
+	+ e-business applications: XML implementations make electronic data interchange (EDI) more accessible for information interchange, business-to-business transactions, and business-to-consumer transactions.
+	+ Metadata applications: XML makes it easier to express metadata in a portable, reusable format.
+	+ Pervasive computing: XML provides portable and structured information types for display on pervasive (wireless) computing devices such as personal digital assistants (PDAs), cellular phones, and others. For example, WML (Wireless Markup Language) and VoiceXML are currently evolving standards for describing visual and speech-driven wireless device interfaces.
+
+* How to use some characteristic elements and attributes
+	1. ATTRIBUTES.
+	+ id: A unique identifier for distinguishing this element from all other elements in the document. Used in SVG element cross-references, link targets, the JavaScript getElementById() methods, CSS selectors, ARIA relationship attributes, and more. Some SVG elements will have no effect without an id.
+	+ class: A set of identifiers that describe custom features of this element, which it might share with other elements. Used in CSS selectors and the JavaScript getElementsByClassName() method, among others.
+	2. ELEMENTS.
+	+ <circle>: A circle defined by the position of the center-point and the radius. Strokes start at 3 o’clock and go clockwise (that is, from where the circle crosses the cx value at a y value greater than cy).
+	+ <ellipse>: An ellipse defined by the position of the center-point and the radius in each direction. Strokes start at 3 o’clock and go clockwise (that is, from where the ellipse crosses the cx value at a y value greater than cy).
+
+* Example document: "flag.xml"
+<?xml version="1.0"?>
+<!DOCTYPE svg>
+<!-- svg type with xmlns attribute defining the namespace, width and height will be displayed in web page -->
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">
+    <circle cx="100" cy="100" r="50" stroke="black" stroke-width="5" fill="red"/> <!-- Circle shape with attributes -->
+</svg>
