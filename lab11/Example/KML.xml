@@ -3,7 +3,7 @@
      xsi:schemaLocation="http://www.opengis.net/kml/2.2 ">
     <Placemark>
         <name>Home</name>
-        <description>My home</description>
+        <description>My Home</description>
         <Point>
             <coordinates>21.00547611,105.77032867</coordinates>
         </Point>
