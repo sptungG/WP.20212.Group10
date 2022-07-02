@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <students>
     <student>
-        <name>Tran </name>
+        <name>Khai </name>
         <age>22</age>
         <gender>Male</gender>
-        <studentId>20176764</studentId>
-        <class>ICT-03.K62</class>
+        <studentId>20184274</studentId>
+        <class>ICT-02.K63</class>
     </student>
     <student>
-        <name>Le Hoang</name>
+        <name>DO QUang </name>
         <age>22</age>
         <gender>Male</gender>
-        <studentId>20172017</studentId>
-        <class>ICT-03.K62</class>
+        <studentId>20184274</studentId>
+        <class>ICT-02.K63</class>
     </student>
 </students>
