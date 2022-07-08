@@ -18,3 +18,10 @@
 
   `bin/cake server`
 
+  ![image](https://user-images.githubusercontent.com/61298021/177018315-4b1e7b14-9908-4228-aa99-e269e2106036.png)
+
+* Result in [http://localhost:8765](http://localhost:8765)
+
+  ![image](https://user-images.githubusercontent.com/61298021/177018406-fc4febcf-5edf-48f9-b1d5-3b889eaafbb0.png)
+
+  ![image](https://user-images.githubusercontent.com/61298021/177018338-6e2cc6b8-3ef0-4973-a4b2-0a2351a7615f.png)
