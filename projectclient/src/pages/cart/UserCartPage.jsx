@@ -380,7 +380,7 @@ const UserCartPage = () => {
                   <div className="support-payment-item">
                     <img
                       alt="VISA"
-                      src="https://cdn.visa.com/v2/assets/images/logos/visa/blue/logo.png"
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Visa_2021.svg/1920px-Visa_2021.svg.png"
                     />
                   </div>
                   <div className="support-payment-item">
