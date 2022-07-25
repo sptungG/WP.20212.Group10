@@ -27,7 +27,7 @@ import { stripeApi } from "./stripe/stripe.query";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "themeProvider", "user"],
+  whitelist: ["auth", "themeProvider"],
 };
 
 const reducers = combineReducers({

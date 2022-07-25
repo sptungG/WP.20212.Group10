@@ -110,35 +110,15 @@ exports.deleteCategory = async (req, res) => {
     const category = await Category.findOne({ _id: categoryId });
     if (!category) throw { status: 404, message: `${categoryId} not found!` };
 
-    const foundProducts = await Product.find({ category: categoryId });
-    let i = 0,
-      len = foundProducts.length,
-      promisesRes = [];
-    while (i < len) {
-      // const foundImages = await Image.findOneAndRemove({ modelId: foundProducts[i]._id });
-      // const promisesDestroyImage = foundImages.map((image) =>
-      //   image ? cloudinary.uploader.destroy(image?.public_id) : null
-      // );
-      promisesRes = await Promise.all([
-        // ...promisesDestroyImage,
-        User.updateMany({}, { $pull: { wishlist_products: foundProducts[i]._id } }, { new: true }),
-        Combo.updateMany(
-          {},
-          { $pull: { products: { product: foundProducts[i]._id } } },
-          { new: true }
-        ),
-        Variant.deleteMany({ product: foundProducts[i]._id }),
-        Wishlist.deleteMany({ modelId: foundProducts[i]._id }),
-        Review.deleteMany({ modelId: foundProducts[i]._id }),
-      ]);
-      i++;
-    }
-
-    const deletedProducts = await Product.deleteMany({ category: categoryId });
+    const updatedProducts = await Product.updateMany(
+      { category: categoryId },
+      { category: null },
+      { new: true }
+    );
     await Category.findOneAndRemove({ _id: categoryId });
     res
       .status(200)
-      .json({ success: true, data: category, extra: [...promisesRes, deletedProducts] });
+      .json({ success: true, data: category, extra: [...promisesRes, updatedProducts] });
   } catch (err) {
     res.status(err?.status || 400).json({ success: false, err: err.message });
   }

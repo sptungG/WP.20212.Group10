@@ -9,6 +9,7 @@ const Category = require("../category/model.category");
 const Image = require("../cloudinary/model.image");
 const Combo = require("../combo/model.combo");
 const Content = require("../content/model.content");
+const Cart = require("../cart/model.cart");
 
 // getFilteredProducts (pagination, sort, search)
 exports.getFilteredProducts = async (req, res) => {
@@ -241,6 +242,7 @@ exports.deleteProduct = async (req, res) => {
       // ...promisesDestroyImage,
       User.updateMany({}, { $pull: { wishlist_products: productId } }, { new: true }),
       Combo.updateMany({}, { $pull: { products: { product: productId } } }, { new: true }),
+      Cart.updateMany({}, { $pull: { products: { product: productId } } }, { new: true }),
       Variant.deleteMany({ product: productId }),
       Wishlist.deleteMany({ modelId: productId }),
       Review.deleteMany({ modelId: productId }),

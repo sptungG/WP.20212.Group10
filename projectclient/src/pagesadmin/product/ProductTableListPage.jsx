@@ -346,7 +346,7 @@ const ProductTableListPage = () => {
                     </Descriptions.Item>
                     <Descriptions.Item label="Danh mục" span={2}>
                       <Typography.Text ellipsis style={{ maxWidth: 240 }}>
-                        {selectedProduct.category.name}
+                        {selectedProduct.category?.name || "Không có"}
                       </Typography.Text>
                     </Descriptions.Item>
                     <Descriptions.Item label="Giá hiển thị" span={2}>

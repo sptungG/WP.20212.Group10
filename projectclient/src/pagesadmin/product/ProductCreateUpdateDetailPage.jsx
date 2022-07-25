@@ -158,7 +158,7 @@ const ProductCreateUpdateDetailPage = () => {
         price,
         images,
         brand,
-        category: category._id,
+        category: category?._id || null,
         contentTitle: productContent?.title || "",
         contentValue: productContent?.content || "",
       });
@@ -188,7 +188,7 @@ const ProductCreateUpdateDetailPage = () => {
         price,
         images,
         brand,
-        category: category._id,
+        category: category?._id || null,
         contentTitle: productContent?.title || "",
         contentValue: productContent?.content || "",
       });

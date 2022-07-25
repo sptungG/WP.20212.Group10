@@ -76,6 +76,7 @@ import { useAuth } from "src/common/useAuth";
 import { PreviewMd } from "src/components/form/MdEditor";
 import ProductCard, { ProductCardLoading } from "src/components/card/ProductCard";
 import { formatDate, formatFromNow } from "src/common/utils";
+import Loader from "src/components/loader/Loader";
 
 export const getTotalInventoryQuantity = (variants) =>
   variants.reduce((currentValue, nextValue) => {
@@ -105,7 +106,7 @@ const ProductDetailPage = () => {
     page: 1,
     limit: 10,
     sort: "",
-    rating: 5,
+    rating: "",
   });
   const [productViewInc, { isLoading: productViewIncLoading }] = useProductViewIncMutation();
   const [createReview, { isLoading: createReviewLoading, isSuccess: createReviewSuccess }] =
@@ -285,15 +286,27 @@ const ProductDetailPage = () => {
                           </Typography.Text>
                         </Descriptions.Item>
                         <Descriptions.Item label="Danh mục" span={3}>
-                          <ChipTag
-                            icon={<Avatar size={15}>{productData.category.name[0]}</Avatar>}
-                            className="colorful rounded"
-                            color={"#d9d9d9"}
-                          >
-                            <Typography.Text ellipsis style={{ maxWidth: 240 }}>
-                              {productData.category.name}
-                            </Typography.Text>
-                          </ChipTag>
+                          {productData.category ? (
+                            <ChipTag
+                              icon={<Avatar size={15}>{productData.category.name[0]}</Avatar>}
+                              className="colorful rounded"
+                              color={"#d9d9d9"}
+                            >
+                              <Typography.Text ellipsis style={{ maxWidth: 240 }}>
+                                {productData.category.name}
+                              </Typography.Text>
+                            </ChipTag>
+                          ) : (
+                            <ChipTag
+                              icon={<Avatar size={15}>{"404"}</Avatar>}
+                              className="colorful rounded"
+                              color={"#d9d9d9"}
+                            >
+                              <Typography.Text ellipsis style={{ maxWidth: 240 }}>
+                                Không có
+                              </Typography.Text>
+                            </ChipTag>
+                          )}
                         </Descriptions.Item>
                         <Descriptions.Item label="Đã bán" span={2}>
                           <Tooltip
@@ -436,7 +449,9 @@ const ProductDetailPage = () => {
                               : Array(4)
                                   .fill(null)
                                   .map((i, index) => (
-                                    <ProductCardLoading key={`relative_productCardLoading_${index}`} />
+                                    <ProductCardLoading
+                                      key={`relative_productCardLoading_${index}`}
+                                    />
                                   ))}
                           </div>
                         </Col>
@@ -472,11 +487,11 @@ const ProductDetailPage = () => {
                         <div className="left-top">
                           <Carousel
                             autoplay
-                            speed={8000}
-                            dots={false}
+                            speed={2000}
+                            dots={true}
                             dotPosition="bottom"
                             easing="ease-in"
-                            effect="scrollx"
+                            effect="fade"
                             pauseOnHover={false}
                             className="carousel"
                           >
@@ -572,7 +587,7 @@ const ProductDetailPage = () => {
                             ? `${productReviewsFilter.rating} ~ ${productReviewsFilter.rating + 1}`
                             : 5}
                         </Divider>
-                        <Form.Item name="rating" noStyle initialValue={5}>
+                        <Form.Item name="rating" noStyle>
                           <Radio.Group>
                             <Space
                               direction="vertical"
@@ -685,7 +700,7 @@ const ProductDetailPage = () => {
           </div>
         </ProductDetailWrapper>
       ) : (
-        <Skeleton active />
+        <Loader />
       )}
       {productQuerySuccess && (
         <ProductDrawerDetail
