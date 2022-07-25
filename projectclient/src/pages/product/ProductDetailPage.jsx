@@ -77,6 +77,7 @@ import { PreviewMd } from "src/components/form/MdEditor";
 import ProductCard, { ProductCardLoading } from "src/components/card/ProductCard";
 import { formatDate, formatFromNow } from "src/common/utils";
 import Loader from "src/components/loader/Loader";
+import { RiFilterOffLine } from "react-icons/ri";
 
 export const getTotalInventoryQuantity = (variants) =>
   variants.reduce((currentValue, nextValue) => {
@@ -190,6 +191,10 @@ const ProductDetailPage = () => {
   const handleFilterReviews = (changedValues, allValues) => {
     const { rating } = allValues;
     setProductReviewsFilter({ ...productReviewsFilter, rating });
+  };
+  const handleResetRatingFilter = () => {
+    reviewsFilterForm.resetFields();
+    setProductReviewsFilter({ ...productReviewsFilter, rating: "" });
   };
 
   const handleReviewChange = (changedValues, allValues) => {
@@ -432,13 +437,14 @@ const ProductDetailPage = () => {
                           </Typography.Title>
                           <PreviewMd value={productData.content?.content || ""} />
                         </Col>
-                        <Col flex="none">
+                        <Col flex="330px">
                           <Divider orientation="left">
                             Có thể bạn sẽ thích · {relativeProductsData.length}
                           </Divider>
                           <div className="relative-list">
-                            {relativeProductsData
-                              ? relativeProductsData.map((p) => (
+                            {getProductsSuccess ? (
+                              relativeProductsData.length > 0 ? (
+                                relativeProductsData.map((p) => (
                                   <ProductCard
                                     key={`relative_productcard_${p._id}`}
                                     product={p}
@@ -446,13 +452,23 @@ const ProductDetailPage = () => {
                                     isWishlisted={isWishlisted(p.wishlist, user?._id)}
                                   ></ProductCard>
                                 ))
-                              : Array(4)
-                                  .fill(null)
-                                  .map((i, index) => (
-                                    <ProductCardLoading
-                                      key={`relative_productCardLoading_${index}`}
-                                    />
-                                  ))}
+                              ) : (
+                                <div className="relative-list-empty">
+                                  <Empty
+                                    className="bordered"
+                                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                  />
+                                </div>
+                              )
+                            ) : (
+                              Array(4)
+                                .fill(null)
+                                .map((i, index) => (
+                                  <ProductCardLoading
+                                    key={`relative_productCardLoading_${index}`}
+                                  />
+                                ))
+                            )}
                           </div>
                         </Col>
                       </Row>
@@ -580,14 +596,22 @@ const ProductDetailPage = () => {
                   </Col>
                   <Col flex={"none"} className="right">
                     <Card size="small">
-                      <Form form={reviewsFilterForm} onValuesChange={handleFilterReviews}>
+                      <Form
+                        form={reviewsFilterForm}
+                        onValuesChange={handleFilterReviews}
+                        layout="vertical"
+                      >
                         <Divider orientation="left" plain>
                           Đánh giá ·{" "}
-                          {productReviewsFilter.rating < 5
-                            ? `${productReviewsFilter.rating} ~ ${productReviewsFilter.rating + 1}`
-                            : 5}
+                          {productReviewsFilter.rating
+                            ? productReviewsFilter.rating < 5
+                              ? `${productReviewsFilter.rating} ~ ${
+                                  productReviewsFilter.rating + 1
+                                }`
+                              : 5
+                            : ""}
                         </Divider>
-                        <Form.Item name="rating" noStyle>
+                        <Form.Item name="rating">
                           <Radio.Group>
                             <Space
                               direction="vertical"
@@ -603,6 +627,16 @@ const ProductDetailPage = () => {
                                 ))}
                             </Space>
                           </Radio.Group>
+                        </Form.Item>
+                        <Form.Item noStyle>
+                          <Button
+                            htmlType="button"
+                            icon={<RiFilterOffLine />}
+                            block
+                            onClick={handleResetRatingFilter}
+                          >
+                            Hủy bộ lọc
+                          </Button>
                         </Form.Item>
                       </Form>
                     </Card>
@@ -1139,6 +1173,9 @@ const ProductContentWrapper = styled.section`
     display: flex;
     flex-direction: column;
     gap: 24px;
+  }
+  & .relative-list-empty {
+    padding-left: 24px;
   }
 `;
 const ProductReviewsWrapper = styled.section`
