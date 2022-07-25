@@ -37,10 +37,10 @@ export const userApi = createApi({
     }),
     // ADMIN
     updateUser: builder.mutation({
-      query: (data) => ({
-        url: `/admin/user/${data.userId}`,
+      query: ({ userId, initdata }) => ({
+        url: `/admin/user/${userId}`,
         method: "PUT",
-        body: data.initdata,
+        body: initdata,
       }),
       invalidatesTags: [{ type: "Users", id: "LIST" }],
     }),

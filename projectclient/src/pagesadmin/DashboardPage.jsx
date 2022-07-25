@@ -54,6 +54,10 @@ export const getTotalByDatakey = (arr = [], datakey) => {
 
 const DashboardPage = () => {
   const ref = useRef(null);
+  const [rangeDataAll, setRangeDataAll] = useState([
+    moment().startOf("week").format(dateFormat),
+    moment().endOf("week").format(dateFormat),
+  ]);
   const [rangeDateUser, setRangeDateUser] = useState([
     moment().startOf("week").format(dateFormat),
     moment().endOf("week").format(dateFormat),
@@ -161,6 +165,7 @@ const DashboardPage = () => {
     setRangeDateIncome(dateStrings);
   };
   const onChange = (dates, dateStrings) => {
+    setRangeDataAll(dateStrings);
     setRangeDateUser(dateStrings);
     setRangeDateIncome(dateStrings);
   };
@@ -241,7 +246,7 @@ const DashboardPage = () => {
             <Card loading size="small" title="___"></Card>
           ) : (
             <>
-              <RangePicker onChange={onChange} bordered />
+              <RangePicker value={rangeDataAll} onChange={onChange} bordered />
               <div className="header-filter-tags">
                 <Typography.Text type="secondary">
                   <ChipTag icon={<BsSliders />}>Trạng thái đơn hàng:</ChipTag>
@@ -286,7 +291,7 @@ const DashboardPage = () => {
               title={<ChipTag icon={<FcLineChart size={22} />}>Thống kê Doanh thu</ChipTag>}
               size="small"
               extra={
-                <RangePicker size="small" bordered={false} onChange={onChangeRangeDateIncome} />
+                <RangePicker size="small" bordered={false} value={rangeDateIncome} onChange={onChangeRangeDateIncome} />
               }
             >
               <MultiLineChart
@@ -320,7 +325,7 @@ const DashboardPage = () => {
               title={
                 <ChipTag icon={<FcAreaChart size={22} />}>Thống kê người dùng đã đăng kí</ChipTag>
               }
-              extra={<RangePicker size="small" bordered={false} onChange={onChangeRangeDateUser} />}
+              extra={<RangePicker size="small" bordered={false} value={rangeDateUser} onChange={onChangeRangeDateUser} />}
             >
               <AreaChart data={userStatInRange} />
             </Card>
@@ -368,7 +373,7 @@ const DashboardPage = () => {
                         />
                         <Space size={0} split={<Divider type="vertical" />}>
                           <Button type="link" disabled={item.role === "admin"}>
-                            <Link to={`/admin/users/${item._id}`}>
+                            <Link to={`/admin/users`}>
                               <BsBoxArrowUpRight size={20} />
                             </Link>
                           </Button>

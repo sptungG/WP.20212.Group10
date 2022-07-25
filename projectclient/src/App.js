@@ -170,7 +170,6 @@ function App() {
                 element={<ProductCreateUpdateDetailPage />}
               />
               <Route path="/admin/users" element={<UserListPage />} />
-              <Route path="/admin/users/:userId" element={<UserDetailPage />} />
               <Route path="/admin/reviews" element={<ReviewProductListPage />} />
               <Route path="/admin/setting" element={<AdminSettingPage />} />
             </Route>

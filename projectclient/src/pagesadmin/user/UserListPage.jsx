@@ -1,68 +1,54 @@
-import {
-  Avatar,
-  Card,
-  Col,
-  Descriptions,
-  Divider,
-  Empty,
-  Image,
-  List,
-  Row,
-  Space,
-  Statistic,
-  Table,
-  Tag,
-  Tooltip,
-  Typography,
-} from "antd";
-import React, { useEffect, useState } from "react";
-import {
-  BsBoxArrowUpRight,
-  BsBoxSeam,
-  BsCartCheck,
-  BsChatLeftText,
-  BsEye,
-  BsHeart,
-  BsLayoutWtf,
-  BsStar,
-  BsThreeDots,
-} from "react-icons/bs";
+import { Avatar, Card, Col, message, Popconfirm, Row, Space, Table, Tag, Typography } from "antd";
 import { rgba } from "polished";
+import { useEffect, useState } from "react";
+import { BsCheckLg, BsThreeDots, BsXLg } from "react-icons/bs";
+import { FaLock, FaUnlockAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { NOT_FOUND_IMG } from "src/common/constant";
-import { checkValidColor, sorterByWords } from "src/common/utils";
+import { useAuth } from "src/common/useAuth";
+import { formatDate, sorterByWords } from "src/common/utils";
 import Button from "src/components/button/Button";
-import MasonryLayout from "src/components/images/MasonryLayout";
 import LocalSearch from "src/components/input/LocalSearch";
+import { dateFormat } from "src/components/picker/RangePicker";
 import AdminLayout from "src/layout/AdminLayout";
-import { useGetAllProductsFilteredQuery } from "src/stores/product/product.query";
-import { useGetFilteredUsersQuery } from "src/stores/user/user.query";
+import { useGetFilteredUsersQuery, useUpdateUserMutation } from "src/stores/user/user.query";
 import styled from "styled-components";
 
-const findImageById = (id, images) => {
-  return images.find((item) => item._id === id);
-};
+const isActive = (status) => status === "active";
 
 const UserListPage = () => {
-  const [selectedUsers, setSelectedUsers] = useState(null);
+  const { user } = useAuth();
   const [usersFilterValue, setUsersFilterValue] = useState({ keyword: "", sort: "" });
 
   const { data: usersFilteredQuery, isSuccess: getUsersSuccess } =
     useGetFilteredUsersQuery(usersFilterValue);
+  const [updateUser, { isLoading: updateUserLoading }] = useUpdateUserMutation();
+  const usersFilteredData = getUsersSuccess ? usersFilteredQuery?.data : [];
+
+  const handleUnlock = async (userId) => {
+    try {
+      message.loading("Đang xử lý...");
+      const updateUserRes = await updateUser({ userId, initdata: { status: "active" } }).unwrap();
+      message.success("Cập nhật trạng thái thành công");
+    } catch (err) {
+      console.log("err", err);
+    }
+  };
+
+  const handleLock = async (userId) => {
+    try {
+      message.loading("Đang xử lý...");
+      const updateUserRes = await updateUser({ userId, initdata: { status: "inactive" } }).unwrap();
+      message.info("Khóa tài khoản thành công");
+    } catch (err) {
+      console.log("err", err);
+    }
+  };
 
   const handleLocalSearch = (values) => {
     setUsersFilterValue({ ...usersFilterValue, keyword: values.keySearch });
   };
 
-  useEffect(() => {
-    if (usersFilteredQuery?.data) {
-      setSelectedUsers(usersFilteredQuery?.data[0]);
-    }
-  }, [usersFilteredQuery?.data]);
-
-  const handleRemove = (productId) => {
-    console.log("handleRemove ~ productId", productId);
-  };
   const columns = [
     {
       title: "Người dùng",
@@ -71,84 +57,96 @@ const UserListPage = () => {
       ellipsis: true,
       render: (text, record) => (
         <Space>
-          <Avatar size={48} src={record.picture} fallback={NOT_FOUND_IMG} key={`table_${record._id}`} />
+          <Avatar
+            size={48}
+            src={record.picture}
+            fallback={NOT_FOUND_IMG}
+            key={`table_${record._id}`}
+          />
           <Space size={2} direction="vertical">
-            <Typography.Text ellipsis>{text}</Typography.Text>
+            <Space size={4} wrap={false}>
+              <Typography.Text ellipsis>{text}</Typography.Text>
+              <Tag>{record.role}</Tag>
+            </Space>
+            <Typography.Text ellipsis>{record.email}</Typography.Text>
           </Space>
         </Space>
       ),
       sorter: (a, b) => sorterByWords("name")(a, b),
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-      width: 320,
-      ellipsis: true,
-      render: (text, record) => <Typography.Text ellipsis>{text}</Typography.Text>,
-      sorter: (a, b) => sorterByWords("email")(a, b),
+      title: "Ngày tham gia",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      width: 240,
+      render: (text, record) => (
+        <Typography.Text ellipsis>{formatDate(text, "DD-MM-YYYY HH:mm:ss")}</Typography.Text>
+      ),
     },
     {
-      title: "Vai trò",
-      dataIndex: "role",
-      key: "role",
-      width: 200,
-      render: (text, record) => <Typography.Text ellipsis>{text}</Typography.Text>,
-      sorter: (a, b) => sorterByWords("role")(a, b),
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
-      width: 200,
-      render: (text, record) => <Typography.Text ellipsis>{text}</Typography.Text>,
-      sorter: (a, b) => sorterByWords("status")(a, b),
+      title: "Ngày cập nhật",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      width: 240,
+      render: (text, record) => (
+        <Typography.Text ellipsis>{formatDate(text, "DD-MM-YYYY HH:mm:ss")}</Typography.Text>
+      ),
     },
     {
       title: <BsThreeDots size={24} />,
-      dataIndex: "_id",
-      key: "actions",
-      width: 160,
+      dataIndex: "",
+      key: "action",
+      width: 180,
       render: (text, record) => (
-        <Typography.Link target="_blank" onClick={() => {setSelectedUsers(record)}}>
-          <Link to={`/admin/users/${selectedUsers?._id}`}>Xem chi tiết</Link>
-        </Typography.Link>
+        <Space size="middle">
+          {isActive(record.status) ? (
+            <Popconfirm
+              title={
+                <p style={{ margin: 0 }}>
+                  Bạn chắc chắn muốn khoá tài khoản <b>{record._id}</b> ?
+                </p>
+              }
+              placement="topRight"
+              okText={<BsCheckLg />}
+              cancelText={<BsXLg />}
+              onConfirm={() => handleLock(record._id)}
+            >
+              <Button size="large" type="text" danger icon={<FaLock />}></Button>
+            </Popconfirm>
+          ) : (
+            <Button
+              size="large"
+              type="link"
+              onClick={() => handleUnlock(record._id)}
+              icon={<FaUnlockAlt />}
+            ></Button>
+          )}
+        </Space>
       ),
     },
   ];
   return (
     <AdminLayout>
       <ContentWrapper>
-        <LocalSearch onFinish={handleLocalSearch} />
+        <LocalSearch
+          placeholder="Tìm kiếm người dùng theo Tên, email..."
+          onFinish={handleLocalSearch}
+          onValuesChange={handleLocalSearch}
+        />
         <Row gutter={24} wrap={false}>
           <Col flex="auto">
-            <Card
-              title="Danh sách người dùng"
-              loading={!getUsersSuccess}
-            >
+            <Card title="Danh sách người dùng" loading={!getUsersSuccess}>
               {getUsersSuccess && (
                 <Table
                   className="table-fixed-pagination"
                   rowKey={(record) => record._id}
-                  rowSelection={{
-                    type: "radio",
-                    selectedRowKeys: [selectedUsers?._id],
-                    defaultSelectedRowKeys: [usersFilteredQuery.data[0]?._id],
-                    onChange: (selectedRowKeys, selectedRows) => {
-                      setSelectedUsers(selectedRows[0]);
-                      console.log(
-                        `selectedRowKeys: ${selectedRowKeys}`,
-                        "selectedRows: ",
-                        selectedRows
-                      );
-                    },
-                  }}
                   columns={columns}
                   footer={() => ""}
-                  dataSource={usersFilteredQuery.data}
+                  dataSource={usersFilteredData}
                   size="default"
+                  rowClassName={(record) => record._id === user._id && "disabled-row"}
                   pagination={{
-                    total: usersFilteredQuery.data.length,
+                    total: usersFilteredData.length,
                     showTotal: (total) => (
                       <p style={{ marginRight: 16 }}>
                         Tổng <b>{total}</b>
@@ -177,70 +175,9 @@ const ContentWrapper = styled.div`
     background: #fff;
     padding: 24px;
   }
-  & .card-reactions {
-    height: fit-content;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-    margin-bottom: 16px;
-    & .reaction {
-      width: fit-content;
-      height: fit-content;
-      padding: 2px 8px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      cursor: pointer;
-      background: transparent;
-      color: ${(props) => props.theme.generatedColors[9]};
-      font-size: 14px;
-      border-radius: 5px;
-
-      margin-top: 0px;
-      overflow: hidden;
-      &::before {
-        content: "";
-        width: 100%;
-        height: 100%;
-        background-color: #f8f9fa;
-        position: absolute;
-        z-index: -1;
-        top: 0px;
-        left: 0px;
-      }
-      & > span {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: inherit;
-      }
-      & > h4 {
-        font-size: inherit;
-        color: inherit;
-        margin-bottom: 0;
-      }
-
-      &:nth-child(1) {
-        color: #00b4d8;
-        background: ${rgba("#00b4d8", 0.25)};
-      }
-      &:nth-child(2) {
-        color: #ffb703;
-        background: ${rgba("#ffb703", 0.25)};
-      }
-      &:nth-child(3) {
-        color: #ffb703;
-        background: ${rgba("#ffb703", 0.25)};
-      }
-      &:nth-child(4) {
-        color: #ff0054;
-        background: ${rgba("#ff0054", 0.25)};
-      }
-    }
+  & .disabled-row {
+    background-color: #f5f5f5;
+    pointer-events: none;
   }
 `;
 
