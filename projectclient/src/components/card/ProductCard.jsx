@@ -9,6 +9,7 @@ import {
   BsLayoutWtf,
   BsStar,
 } from "react-icons/bs";
+import { ImFire } from "react-icons/im";
 import styled, { keyframes } from "styled-components";
 import { rgba } from "polished";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,8 +18,24 @@ import { useAddToCart } from "src/common/useAddToCart";
 import { useMediaQuery } from "react-responsive";
 import { NOT_FOUND_IMG } from "src/common/constant";
 import classNames from "classnames";
+import {
+  getTotalInventoryQuantity,
+  getTotalInventorySold,
+} from "src/pages/product/ProductDetailPage";
 
-export const ProductCardLoading = ({width = 330 }) => {
+export const renderTagStatus = (variants) => {
+  const quantity = getTotalInventoryQuantity(variants);
+  const sold = getTotalInventorySold(variants);
+  if (quantity < 1) return <Tag style={{borderRadius: 5}} color="error">Hết hàng</Tag>;
+  else if (sold / (quantity + sold) > 0.8)
+    return (
+      <Tag icon={<ImFire />} style={{borderRadius: 5}} color="success">
+        Trending
+      </Tag>
+    );
+};
+
+export const ProductCardLoading = ({ width = 330 }) => {
   return (
     <CardWrapper className="loading" cardWidth={width}>
       <div className="card-action-top">
@@ -44,6 +61,7 @@ const ProductCard = ({
 }) => {
   return (
     <CardWrapper className={className} cardWidth={width}>
+      <div className="card-top-left">{product.variants && renderTagStatus(product.variants)}</div>
       <Space className="card-action-top">
         <Statistic value={product.price} suffix="$" className="price-tag" />
       </Space>
@@ -216,6 +234,15 @@ const CardWrapper = styled.div`
       & .btn-cart {
         border: 1px solid ${(props) => props.theme.generatedColors[1]};
       }
+    }
+  }
+  & .card-top-left {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    z-index: 1;
+    & .ant-tag {
+      border-radius: 5px;
     }
   }
   & .card-action-top {

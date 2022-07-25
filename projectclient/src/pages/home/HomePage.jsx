@@ -2,11 +2,14 @@ import { Result } from "antd";
 import lodash from "lodash";
 import { useEffect, useState } from "react";
 import { AiOutlineSmile } from "react-icons/ai";
+import { BsArrowDown } from "react-icons/bs";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
 import { useAuth } from "src/common/useAuth";
 import { useResponsiveProductFilter } from "src/common/useResponsiveProductFilter";
 import { isWishlisted } from "src/common/useToggleWishlist";
+import AnimatedButton from "src/components/button/AnimatedButton";
+import Button from "src/components/button/Button";
 import ProductCard, { ProductCardLoading } from "src/components/card/ProductCard";
 import ProductDrawerDetail from "src/components/card/ProductDrawerDetail";
 import MainLayout from "src/layout/MainLayout";
@@ -26,6 +29,10 @@ const HomePage = () => {
   const [selectedProductId, setSelectedProductId] = useState(null);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, [productsFilterValue.limit]);
+
+  useEffect(() => {
     if (productsFilterValue.page === 1) {
       setProductsFiltered(productsFilteredQuery?.data || []);
     } else if (productsFilterValue.page <= productsFilteredQuery?.pagination.totalPage) {
@@ -34,6 +41,7 @@ const HomePage = () => {
       );
     }
   }, [
+    productsFilterValue.limit,
     productsFilterValue.page,
     productsFilteredQuery?.data,
     productsFilteredQuery?.pagination.totalPage,
@@ -41,60 +49,86 @@ const HomePage = () => {
 
   return (
     <MainLayout>
-      {productsFilteredSuccess && (
-        <InfiniteScroll
-          dataLength={productsFilteredQuery?.pagination.total}
-          next={() =>
-            setProductsFilterValue((prev) => ({
-              ...prev,
-              page: prev.page + 1,
-            }))
-          }
-          hasMore={productsFilterValue.page < productsFilteredQuery?.pagination.totalPage}
-          loader={
-            <ProductsWrapper>
-              {Array(productsFilterValue.limit)
-                .fill(null)
-                .map((i, index) => (
-                  <ProductCardLoading key={`ProductCardLoading_${index}`} />
-                ))}
-            </ProductsWrapper>
-          }
-          endMessage={
-            <Result
-              icon={<AiOutlineSmile size={48} />}
-              title="Great, You have seen it all!"
-              extra={<Link to={"/store"}>Start shopping now</Link>}
-            />
-          }
-        >
-          <ProductsWrapper>
-            {productsFiltered.map((p) => (
-              <ProductCard
-                key={`ProductCard_${p._id}`}
-                product={p}
-                getSelectedProductId={(p) => setSelectedProductId(p)}
-                isWishlisted={isWishlisted(p.wishlist, user?._id)}
-              ></ProductCard>
-            ))}
-          </ProductsWrapper>
-        </InfiniteScroll>
-      )}
-      {productsFilteredSuccess && (
-        <ProductDrawerDetail
-          productId={selectedProductId || null}
-          setSelectedProduct={(value) => setSelectedProductId(value)}
-        />
-      )}
+      <HomeWrapper>
+        {productsFilteredSuccess && (
+          <InfiniteScroll
+            dataLength={productsFilteredQuery?.pagination.total}
+            next={() =>
+              setProductsFilterValue((prev) => ({
+                ...prev,
+                page: prev.page + 1,
+              }))
+            }
+            scrollThreshold="4px"
+            hasMore={productsFilterValue.page < productsFilteredQuery?.pagination.totalPage}
+            loader={
+              <ProductsContainer>
+                {Array(productsFilterValue.limit)
+                  .fill(null)
+                  .map((i, index) => (
+                    <ProductCardLoading key={`ProductCardLoading_${index}`} />
+                  ))}
+                <div className="actions">
+                  <Button
+                    onClick={() =>
+                      setProductsFilterValue((prev) => ({
+                        ...prev,
+                        page: prev.page + 1,
+                      }))
+                    }
+                    size="large"
+                    shape="round"
+                    icon={<BsArrowDown />}
+                  >
+                    Xem thêm ngay
+                  </Button>
+                </div>
+              </ProductsContainer>
+            }
+            endMessage={
+              <Result
+                icon={<AiOutlineSmile size={48} />}
+                title="Bạn đã lướt hết sản phẩm rồi!"
+                extra={
+                  <Link to={"/store"} style={{ display: "flex", justifyContent: "center" }}>
+                    <AnimatedButton>Bắt đầu mua hàng thôi</AnimatedButton>
+                  </Link>
+                }
+              />
+            }
+          >
+            <ProductsContainer>
+              {productsFiltered.map((p) => (
+                <ProductCard
+                  key={`ProductCard_${p._id}`}
+                  product={p}
+                  getSelectedProductId={(p) => setSelectedProductId(p)}
+                  isWishlisted={isWishlisted(p.wishlist, user?._id)}
+                ></ProductCard>
+              ))}
+            </ProductsContainer>
+          </InfiniteScroll>
+        )}
+        {productsFilteredSuccess && (
+          <ProductDrawerDetail
+            productId={selectedProductId || null}
+            setSelectedProduct={(value) => setSelectedProductId(value)}
+          />
+        )}
+      </HomeWrapper>
     </MainLayout>
   );
 };
 
-const ProductsWrapper = styled.div`
+const HomeWrapper = styled.div`
+`;
+
+const ProductsContainer = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
   display: grid;
+  position: relative;
   grid-template-columns: repeat(auto-fill, 330px);
   justify-content: center;
   justify-items: center;
@@ -105,6 +139,12 @@ const ProductsWrapper = styled.div`
   }
   @media screen and (max-width: 1023.98px) {
     grid-gap: 24px;
+  }
+  & > .actions {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 `;
 

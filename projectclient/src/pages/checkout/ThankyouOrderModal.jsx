@@ -1,7 +1,7 @@
-import { Modal } from "antd";
+import { Image, Modal } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { THANKYOU_IMG_1 } from "src/common/constant";
+import { NOT_FOUND_IMG, THANKYOU_IMG_1 } from "src/common/constant";
 import AnimatedButton from "src/components/button/AnimatedButton";
 import AnimateBgSquares from "src/components/images/AnimateBgSquares";
 import styled from "styled-components";
@@ -15,7 +15,7 @@ const ThankyouOrderModal = ({ initvisible = false }) => {
       destroyOnClose
       footer={null}
       onCancel={() => {
-        navigate("/", { replace: true });
+        navigate("/profile", { replace: true });
         setVisible(false);
       }}
     >
@@ -24,9 +24,9 @@ const ThankyouOrderModal = ({ initvisible = false }) => {
           <AnimateBgSquares className="primary" />
         </div>
         <div className="thankyou-wrapper">
-          <img src={THANKYOU_IMG_1} alt="THANKYOU_IMG" />
+          <Image preview={false} src={THANKYOU_IMG_1} alt="THANKYOU_IMG" fallback={NOT_FOUND_IMG} />
           <div className="actions">
-            <AnimatedButton onClick={() => navigate("/", { replace: true })}>
+            <AnimatedButton onClick={() => navigate("/store", { replace: true })}>
               Tiếp tục mua hàng
             </AnimatedButton>
           </div>

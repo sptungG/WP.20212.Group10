@@ -362,8 +362,8 @@ const UserCartPage = () => {
                     state: { from: "cart" },
                   }}
                 >
-                  <Button size="large" type="primary">
-                    Login to Checkout
+                  <Button size="large" type="primary" block>
+                    Bạn cần đăng nhập
                   </Button>
                 </Link>
               )}
@@ -440,7 +440,7 @@ const CartWrapper = styled.main`
       }
     }
   }
-  & .ant-empty{
+  & .ant-empty {
     height: 100%;
     display: flex;
     justify-content: center;

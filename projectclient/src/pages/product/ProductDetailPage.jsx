@@ -9,6 +9,7 @@ import {
   Divider,
   Empty,
   Form,
+  Image,
   Input,
   List,
   message,
@@ -54,7 +55,7 @@ import { useChangeThemeProvider } from "src/common/useChangeThemeProvider";
 import { isWishlisted, useToggleWishlist } from "src/common/useToggleWishlist";
 import { formatDate } from "src/common/utils";
 import Button from "src/components/button/Button";
-import ProductCard, { ProductCardLoading } from "src/components/card/ProductCard";
+import ProductCard, { ProductCardLoading, renderTagStatus } from "src/components/card/ProductCard";
 import ProductDrawerDetail from "src/components/card/ProductDrawerDetail";
 import ChipTag from "src/components/chip/ChipTag";
 import ReactionChipTags from "src/components/chip/ReactionChipTags";
@@ -175,7 +176,9 @@ const ProductDetailPage = () => {
         initdata: { rating, comment },
       }).unwrap();
       message.success("Thêm vào đánh giá thành công");
-      setReviewFormVisible(false);
+      productQueryRefetch();
+      // setReviewFormVisible(false);
+      setActiveKey("reviews");
     } catch (err) {
       message.error("Đã có lỗi xảy ra");
       console.log(err);
@@ -249,6 +252,7 @@ const ProductDetailPage = () => {
                       style={{ marginTop: "auto" }}
                     >
                       <ReactionChipTags colorful={false} size={16} data={productData} />
+                      {productData.variants && renderTagStatus(productData.variants)}
                     </Space>
                   </div>
                   <Row className="left-info-bottom" gutter={24} wrap={false}>
@@ -266,7 +270,7 @@ const ProductDetailPage = () => {
                           size={8}
                           align="center"
                         >
-                          <Rate disabled defaultValue={productData.avgRating} />
+                          <Rate disabled defaultValue={productData.avgRating} allowHalf />
                           <span className="rating-value">{`( ${productData.numOfReviews} đánh giá )`}</span>
                         </Space>
                         {productReviewsRes?.reviewers.length > 0 && (
@@ -397,7 +401,10 @@ const ProductDetailPage = () => {
                           className="btn-rating"
                           loading={!productQuerySuccess}
                           disabled={!productQuerySuccess || productData.variants.length < 1}
-                          onClick={() => setReviewFormVisible(true)}
+                          onClick={() => {
+                            setReviewFormVisible(true);
+                            setActiveKey("reviews");
+                          }}
                         >
                           Đánh giá sản phẩm
                         </Button>
@@ -816,7 +823,12 @@ const ProductDetailPage = () => {
           <Divider className={!myReview ? "" : "hidden"} />
           {!!myReview && (
             <div className="thankyou-wrapper">
-              <img src={THANKYOU_IMG} alt="THANKYOU_IMG" />
+              <Image
+                preview={false}
+                src={THANKYOU_IMG}
+                alt="THANKYOU_IMG"
+                fallback={NOT_FOUND_IMG}
+              />
             </div>
           )}
           <Comment
