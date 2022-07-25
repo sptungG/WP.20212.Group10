@@ -67,6 +67,25 @@ export function useAuth() {
     return;
   };
 
+  const messageLock = (lockedemail) => {
+    message.error({
+      content: (
+        <>
+          <div>{lockedemail} hiện đang khoá!</div>
+          <div>
+            <a href="mailto:ngoviettung154@gmail.com">Liên hệ quản trị viên</a>
+          </div>
+        </>
+      ),
+      onClick: () => {
+        message.destroy();
+      },
+      duration: 0,
+    });
+    logout();
+    return;
+  };
+
   return {
     isAdmin,
     isSignedIn,
@@ -75,5 +94,6 @@ export function useAuth() {
     message401,
     refetchCurrentUser,
     logout,
+    messageLock,
   };
 }

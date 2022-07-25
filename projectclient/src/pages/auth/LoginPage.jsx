@@ -1,4 +1,4 @@
-import { Col, Divider, Form, Input, notification, Row, Space, Typography } from "antd";
+import { Col, Divider, Form, Input, message, notification, Row, Space, Typography } from "antd";
 import { signInWithEmailAndPassword, signInWithPopup, signInWithRedirect } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { BsInstagram } from "react-icons/bs";
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, googleAuthProvider } from "src/common/firebase-config";
+import { useAuth } from "src/common/useAuth";
 import Button from "src/components/button/Button";
 import ThemeButton from "src/components/button/ThemeButton";
 import CarouselGallery from "src/components/images/CarouselGallery";
@@ -78,30 +79,20 @@ const LoginPage = (props) => {
       if (!user.emailVerified) throw new Error(`${user.email} hasn't verified yet!`);
       const idTokenResult = await user.getIdTokenResult();
       const res = await createOrUpdateUser(idTokenResult.token).unwrap();
-      dispatch(setRefreshToken(user.refreshToken));
-      dispatch(setAuthtokenCredential(idTokenResult.token));
-      dispatch(setUser(res));
-      dispatch(setEmailVerifiedValue(""));
-      setLoading(false);
-      roleBasedRedirect(res?.role);
+
+      if (["deleted", "inactive"].includes(res.status)) {
+        throw new Error(`${res.email} hiện đang khoá!`);
+      } else {
+        dispatch(setRefreshToken(user.refreshToken));
+        dispatch(setAuthtokenCredential(idTokenResult.token));
+        dispatch(setUser(res));
+        dispatch(setEmailVerifiedValue(""));
+        setLoading(false);
+        roleBasedRedirect(res?.role);
+      }
     } catch (error) {
       notification.error({
         message: error.message,
-        btn: (
-          <span
-            onClick={() => {
-              navigate("/login");
-            }}
-          >
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={"https://mail.google.com/mail/u/0/#inbox"}
-            >
-              Go to mailbox
-            </a>
-          </span>
-        ),
       });
       setLoading(false);
     }

@@ -1,6 +1,6 @@
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, message } from "antd";
 import "antd/dist/antd.variable.min.css";
 import { getRedirectResult, onAuthStateChanged } from "firebase/auth";
 import { lazy, Suspense, useEffect, useLayoutEffect } from "react";
@@ -58,10 +58,12 @@ const AdminSettingPage = lazy(() => import("src/pagesadmin/setting/AdminSettingP
 // recreating the Stripe object on every render.
 // This is your test publishable API key.
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
-
+message.config({
+  maxCount: 1,
+});
 function App() {
   let navigate = useNavigate();
-  const { isSignedIn, user, credential } = useAuth();
+  const { logout, user, credential, messageLock } = useAuth();
   const [currentUser] = useCurrentUserMutation();
   const [createOrUpdateUser] = useCreateOrUpdateUserMutation();
   const { themeProvider } = useChangeThemeProvider();
@@ -76,9 +78,14 @@ function App() {
           const { user } = result;
           const idTokenResult = await user.getIdTokenResult();
           const res = await createOrUpdateUser(idTokenResult.token).unwrap();
-          dispatch(setRefreshToken(user.refreshToken));
-          dispatch(setAuthtokenCredential(idTokenResult.token));
-          dispatch(setUser(res));
+          if (["deleted", "inactive"].includes(res.status)) {
+            messageLock(res.email);
+            throw new Error(`${res.email} is inactive!`);
+          } else {
+            dispatch(setRefreshToken(user.refreshToken));
+            dispatch(setAuthtokenCredential(idTokenResult.token));
+            dispatch(setUser(res));
+          }
           dispatch(setDataRedirectStatus("noLoading"));
           navigate("/", { replace: true });
         })
@@ -97,9 +104,14 @@ function App() {
           if (!user.emailVerified) throw new Error(`${user.email} hasn't verified yet!`);
           const idTokenResult = await user.getIdTokenResult();
           const res = await currentUser(idTokenResult.token).unwrap();
-          dispatch(setAuthtokenCredential(idTokenResult.token));
-          dispatch(setRefreshToken(user.refreshToken));
-          dispatch(setUser(res));
+          if (["deleted", "inactive"].includes(res.status)) {
+            messageLock(res.email);
+            throw new Error(`${res.email} is inactive!`);
+          } else {
+            dispatch(setAuthtokenCredential(idTokenResult.token));
+            dispatch(setRefreshToken(user.refreshToken));
+            dispatch(setUser(res));
+          }
         } catch (err) {}
       }
     });

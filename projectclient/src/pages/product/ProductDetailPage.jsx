@@ -1,12 +1,9 @@
 import {
-  Affix,
-  Alert,
   Avatar,
   BackTop,
   Card,
   Carousel,
   Col,
-  Collapse,
   Comment,
   Descriptions,
   Divider,
@@ -27,24 +24,9 @@ import {
   Tooltip,
   Typography,
 } from "antd";
-import Button from "src/components/button/Button";
+import classNames from "classnames";
 import { rgba } from "polished";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { NOT_FOUND_IMG, THANKYOU_IMG } from "src/common/constant";
-import MainLayout from "src/layout/MainLayout";
-import {
-  useGetProductQuery,
-  useGetProductsFilteredQuery,
-  useProductViewIncMutation,
-} from "src/stores/product/product.query";
-import {
-  useCreateReviewMutation,
-  useGetReviewsByProductQuery,
-} from "src/stores/review/review.query";
-import Swiper, { EffectCreative, Parallax } from "swiper";
-import styled from "styled-components";
-import PostersSlider from "src/components/silder/PostersSlider";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   BsBoxSeam,
   BsCartPlus,
@@ -59,25 +41,37 @@ import {
   BsLayoutWtf,
   BsListStars,
   BsPerson,
-  BsShift,
   BsStar,
   BsStarFill,
   BsStars,
 } from "react-icons/bs";
+import { RiFilterOffLine } from "react-icons/ri";
+import { useMediaQuery } from "react-responsive";
+import { useNavigate, useParams } from "react-router-dom";
+import { NOT_FOUND_IMG, THANKYOU_IMG } from "src/common/constant";
+import { useAuth } from "src/common/useAuth";
+import { useChangeThemeProvider } from "src/common/useChangeThemeProvider";
+import { isWishlisted, useToggleWishlist } from "src/common/useToggleWishlist";
+import { formatDate } from "src/common/utils";
+import Button from "src/components/button/Button";
+import ProductCard, { ProductCardLoading } from "src/components/card/ProductCard";
+import ProductDrawerDetail from "src/components/card/ProductDrawerDetail";
 import ChipTag from "src/components/chip/ChipTag";
 import ReactionChipTags from "src/components/chip/ReactionChipTags";
-import { useChangeThemeProvider } from "src/common/useChangeThemeProvider";
-import ProductDrawerDetail from "src/components/card/ProductDrawerDetail";
-import { useMediaQuery } from "react-responsive";
-import classNames from "classnames";
-import { useSelector } from "react-redux";
-import { isWishlisted, useToggleWishlist } from "src/common/useToggleWishlist";
-import { useAuth } from "src/common/useAuth";
 import { PreviewMd } from "src/components/form/MdEditor";
-import ProductCard, { ProductCardLoading } from "src/components/card/ProductCard";
-import { formatDate, formatFromNow } from "src/common/utils";
 import Loader from "src/components/loader/Loader";
-import { RiFilterOffLine } from "react-icons/ri";
+import PostersSlider from "src/components/silder/PostersSlider";
+import MainLayout from "src/layout/MainLayout";
+import {
+  useGetProductQuery,
+  useGetProductsFilteredQuery,
+  useProductViewIncMutation,
+} from "src/stores/product/product.query";
+import {
+  useCreateReviewMutation,
+  useGetReviewsByProductQuery,
+} from "src/stores/review/review.query";
+import styled from "styled-components";
 
 export const getTotalInventoryQuantity = (variants) =>
   variants.reduce((currentValue, nextValue) => {
@@ -92,9 +86,10 @@ const getReviewed = (reviewerList = [], userId) =>
   userId ? reviewerList?.find((u) => u.createdBy?._id === userId) : null;
 
 const ProductDetailPage = () => {
-  const isReviewed = useRef(false);
   const [reviewForm] = Form.useForm();
   const [reviewsFilterForm] = Form.useForm();
+  const mediaBelow625 = useMediaQuery({ maxWidth: 625 });
+  const mediaBelow1024 = useMediaQuery({ maxWidth: 1024 });
   const mediaBelow1124 = useMediaQuery({ maxWidth: 1124 });
   const mediaAbove1280 = useMediaQuery({ minWidth: 1280 });
   let navigate = useNavigate();
@@ -416,6 +411,7 @@ const ProductDetailPage = () => {
               <div className="detail-top">
                 <Tabs
                   defaultActiveKey="content"
+                  destroyInactiveTabPane
                   activeKey={activeKey}
                   onChange={(key) => {
                     setActiveKey(key);
@@ -431,46 +427,48 @@ const ProductDetailPage = () => {
                   >
                     <ProductContentWrapper className={activeKey !== "content" ? "hidden" : ""}>
                       <Row wrap={false} gutter={24}>
-                        <Col flex="auto">
+                        <Col flex="auto" className="left">
                           <Typography.Title level={2}>
                             {productData.content?.title || ""}
                           </Typography.Title>
                           <PreviewMd value={productData.content?.content || ""} />
                         </Col>
-                        <Col flex="330px">
-                          <Divider orientation="left">
-                            Có thể bạn sẽ thích · {relativeProductsData.length}
-                          </Divider>
-                          <div className="relative-list">
-                            {getProductsSuccess ? (
-                              relativeProductsData.length > 0 ? (
-                                relativeProductsData.map((p) => (
-                                  <ProductCard
-                                    key={`relative_productcard_${p._id}`}
-                                    product={p}
-                                    getSelectedProductId={(p) => setSelectedProductId(p)}
-                                    isWishlisted={isWishlisted(p.wishlist, user?._id)}
-                                  ></ProductCard>
-                                ))
+                        {!mediaBelow1024 && (
+                          <Col flex="330px" className="right">
+                            <Divider orientation="left">
+                              Có thể bạn sẽ thích · {relativeProductsData.length}
+                            </Divider>
+                            <div className="relative-list">
+                              {getProductsSuccess ? (
+                                relativeProductsData.length > 0 ? (
+                                  relativeProductsData.map((p) => (
+                                    <ProductCard
+                                      key={`relative_productcard_${p._id}`}
+                                      product={p}
+                                      getSelectedProductId={(p) => setSelectedProductId(p)}
+                                      isWishlisted={isWishlisted(p.wishlist, user?._id)}
+                                    ></ProductCard>
+                                  ))
+                                ) : (
+                                  <div className="relative-list-empty">
+                                    <Empty
+                                      className="bordered"
+                                      image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                    />
+                                  </div>
+                                )
                               ) : (
-                                <div className="relative-list-empty">
-                                  <Empty
-                                    className="bordered"
-                                    image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                  />
-                                </div>
-                              )
-                            ) : (
-                              Array(4)
-                                .fill(null)
-                                .map((i, index) => (
-                                  <ProductCardLoading
-                                    key={`relative_productCardLoading_${index}`}
-                                  />
-                                ))
-                            )}
-                          </div>
-                        </Col>
+                                Array(4)
+                                  .fill(null)
+                                  .map((i, index) => (
+                                    <ProductCardLoading
+                                      key={`relative_productCardLoading_${index}`}
+                                    />
+                                  ))
+                              )}
+                            </div>
+                          </Col>
+                        )}
                       </Row>
                     </ProductContentWrapper>
                   </Tabs.TabPane>
@@ -594,53 +592,55 @@ const ProductDetailPage = () => {
                       )}
                     />
                   </Col>
-                  <Col flex={"none"} className="right">
-                    <Card size="small">
-                      <Form
-                        form={reviewsFilterForm}
-                        onValuesChange={handleFilterReviews}
-                        layout="vertical"
-                      >
-                        <Divider orientation="left" plain>
-                          Đánh giá ·{" "}
-                          {productReviewsFilter.rating
-                            ? productReviewsFilter.rating < 5
-                              ? `${productReviewsFilter.rating} ~ ${
-                                  productReviewsFilter.rating + 1
-                                }`
-                              : 5
-                            : ""}
-                        </Divider>
-                        <Form.Item name="rating">
-                          <Radio.Group>
-                            <Space
-                              direction="vertical"
-                              size={0}
-                              style={{ flexDirection: "column-reverse" }}
+                  {!mediaBelow625 && (
+                    <Col flex={"none"} className="right">
+                      <Card size="small">
+                        <Form
+                          form={reviewsFilterForm}
+                          onValuesChange={handleFilterReviews}
+                          layout="vertical"
+                        >
+                          <Divider orientation="left" plain>
+                            Đánh giá ·{" "}
+                            {productReviewsFilter.rating
+                              ? productReviewsFilter.rating < 5
+                                ? `${productReviewsFilter.rating} ~ ${
+                                    productReviewsFilter.rating + 1
+                                  }`
+                                : 5
+                              : ""}
+                          </Divider>
+                          <Form.Item name="rating">
+                            <Radio.Group>
+                              <Space
+                                direction="vertical"
+                                size={0}
+                                style={{ flexDirection: "column-reverse" }}
+                              >
+                                {Array(5)
+                                  .fill(null)
+                                  .map((item, index) => (
+                                    <Radio value={index + 1} key={`radio_star_${index}`}>
+                                      <Rate disabled defaultValue={index + 1} />
+                                    </Radio>
+                                  ))}
+                              </Space>
+                            </Radio.Group>
+                          </Form.Item>
+                          <Form.Item noStyle>
+                            <Button
+                              htmlType="button"
+                              icon={<RiFilterOffLine />}
+                              block
+                              onClick={handleResetRatingFilter}
                             >
-                              {Array(5)
-                                .fill(null)
-                                .map((item, index) => (
-                                  <Radio value={index + 1} key={`radio_star_${index}`}>
-                                    <Rate disabled defaultValue={index + 1} />
-                                  </Radio>
-                                ))}
-                            </Space>
-                          </Radio.Group>
-                        </Form.Item>
-                        <Form.Item noStyle>
-                          <Button
-                            htmlType="button"
-                            icon={<RiFilterOffLine />}
-                            block
-                            onClick={handleResetRatingFilter}
-                          >
-                            Hủy bộ lọc
-                          </Button>
-                        </Form.Item>
-                      </Form>
-                    </Card>
-                  </Col>
+                              Hủy bộ lọc
+                            </Button>
+                          </Form.Item>
+                        </Form>
+                      </Card>
+                    </Col>
+                  )}
                 </Row>
               </ProductReviewsWrapper>
               <ProductCombosWrapper className={activeKey !== "combos" ? "hidden" : ""}>

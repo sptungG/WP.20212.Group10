@@ -1,42 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { ProductsFilter } from "src/common/constant";
+import { Result } from "antd";
+import lodash from "lodash";
+import { useEffect, useState } from "react";
+import { AiOutlineSmile } from "react-icons/ai";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { Link } from "react-router-dom";
+import { useAuth } from "src/common/useAuth";
+import { useResponsiveProductFilter } from "src/common/useResponsiveProductFilter";
 import { isWishlisted } from "src/common/useToggleWishlist";
 import ProductCard, { ProductCardLoading } from "src/components/card/ProductCard";
 import ProductDrawerDetail from "src/components/card/ProductDrawerDetail";
 import MainLayout from "src/layout/MainLayout";
-import { useGetProductsFilteredQuery } from "src/stores/product/product.query";
 import styled from "styled-components";
-import lodash from "lodash";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { Result } from "antd";
-import { AiOutlineSmile } from "react-icons/ai";
-import { Link } from "react-router-dom";
-import { useAuth } from "src/common/useAuth";
-
-const ProductsWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 330px);
-  justify-content: center;
-  justify-items: center;
-  align-items: start;
-  grid-gap: 24px;
-  @media screen and (max-width: 1023.98px) {
-    grid-gap: 24px 0;
-  }
-`;
 
 const HomePage = () => {
   const { user } = useAuth();
-  const [productsFilterValue, setProductsFilterValue] = useState({ page: 1, limit: 4 });
   const {
-    data: productsFilteredQuery,
-    isFetching: productsFilteredFetching,
-    isSuccess: productsFilteredSuccess,
-  } = useGetProductsFilteredQuery(productsFilterValue);
+    productsFilterValue,
+    setProductsFilterValue,
+    productsFilteredQuery,
+    productsFilteredFetching,
+    productsFilteredSuccess,
+  } = useResponsiveProductFilter();
+
   const [productsFiltered, setProductsFiltered] = useState([]);
   const [selectedProductId, setSelectedProductId] = useState(null);
 
@@ -68,7 +53,7 @@ const HomePage = () => {
           hasMore={productsFilterValue.page < productsFilteredQuery?.pagination.totalPage}
           loader={
             <ProductsWrapper>
-              {Array(4)
+              {Array(productsFilterValue.limit)
                 .fill(null)
                 .map((i, index) => (
                   <ProductCardLoading key={`ProductCardLoading_${index}`} />
@@ -104,5 +89,23 @@ const HomePage = () => {
     </MainLayout>
   );
 };
+
+const ProductsWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 330px);
+  justify-content: center;
+  justify-items: center;
+  align-items: start;
+  grid-gap: 24px;
+  @media screen and (min-width: 1440px) {
+    grid-template-columns: repeat(4, 330px);
+  }
+  @media screen and (max-width: 1023.98px) {
+    grid-gap: 24px;
+  }
+`;
 
 export default HomePage;
