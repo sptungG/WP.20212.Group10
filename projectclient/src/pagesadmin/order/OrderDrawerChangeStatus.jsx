@@ -28,36 +28,46 @@ import { formatDate, setColorByStatus } from "src/common/utils";
 import Button from "src/components/button/Button";
 import ChipTag from "src/components/chip/ChipTag";
 import { useGetOrderByIdQuery, useUpdateOrderMutation } from "src/stores/order/order.query";
+import { useRefundPaymentMutation } from "src/stores/stripe/stripe.query";
 import styled from "styled-components";
 
 const validateMessages = {
   required: "Trường này chưa nhập giá trị!",
 };
 
-const OrderDrawerChangeStatus = ({
-  setSelectedOrder,
-  selectedOrder = null,
-}) => {
+const OrderDrawerChangeStatus = ({ setSelectedOrder, selectedOrder = null }) => {
   const [form] = Form.useForm();
   const { user } = useAuth();
   const [updateOrder, { isLoading: updateOrderLoading }] = useUpdateOrderMutation();
+  const [refundPayment, { isLoading: refundPaymentLoading }] = useRefundPaymentMutation();
+
   const { data: getOrderQuery, isSuccess: getOrderSuccess } = useGetOrderByIdQuery(selectedOrder, {
     skip: !selectedOrder,
   });
   const statusValue = Form.useWatch("statusValue", form);
   const statusName = Form.useWatch("statusName", form);
+  // const orderLogContent = Form.useWatch("orderLogContent", form);
   const [orderLog, setOrderLog] = useState([]);
   const foundOrderData = getOrderSuccess ? getOrderQuery?.data : null;
 
   useEffect(() => {
     if (getOrderSuccess) {
       const { orderStatus, orderLog } = getOrderQuery?.data;
-      setOrderLog(orderLog);
-      form.setFieldsValue({ statusValue: orderStatus?.value, statusName: orderStatus?.name });
+      const reversedLog = lodash.reverse([...orderLog]);
+      setOrderLog(reversedLog);
+      form.setFieldsValue({
+        statusValue: orderStatus?.value,
+        statusName: orderStatus?.name,
+        orderLogContent: "",
+      });
     }
-  }, [getOrderSuccess]);
+  }, [getOrderSuccess, getOrderQuery?.data]);
 
-  const handleValuesChange = (changedValue, values) => {
+  // useEffect(() => {
+  //   if(orderLogContent)
+  // }, [orderLogContent])
+
+  const handleValuesChange = (currentOrderLog, values) => {
     const { orderLogContent } = values;
     const newLog = lodash.uniqBy(
       [
@@ -67,7 +77,7 @@ const OrderDrawerChangeStatus = ({
           createdAt: undefined,
           createdBy: user,
         },
-        ...orderLog,
+        ...currentOrderLog,
       ],
       "_id"
     );
@@ -95,6 +105,23 @@ const OrderDrawerChangeStatus = ({
       setSelectedOrder(null);
     }
   };
+  const handleCancelOrderStatus = async (orderId, values, orderPaymentStatus) => {
+    try {
+      if (!orderId) throw new Error("Mã đơn sai định dạng");
+      message.loading("Đang xử lý ...");
+      const updateOrderRes = await updateOrder({ orderId, initdata: values });
+      if (values.statusValue === "CANCELLED" && String(orderPaymentStatus) !== "COD") {
+        const refundRes = await refundPayment(orderId).unwrap();
+        message.info("Hủy đơn hàng thành công. Xác nhận hoàn tiền về tài khoản khách hàng");
+      }
+      message.success("Cập nhật trạng thái đơn hàng thành công");
+      setSelectedOrder(null);
+    } catch (err) {
+      message.error("Đã có lỗi xảy ra");
+      console.log("err", err);
+      setSelectedOrder(null);
+    }
+  };
   const handleChangeSelect = (selectedValue, selectedOption) => {
     const { key, value, label } = selectedOption;
     form.setFieldsValue({
@@ -105,7 +132,9 @@ const OrderDrawerChangeStatus = ({
   return (
     <Drawer
       visible={!!selectedOrder}
-      onClose={() => setSelectedOrder(null)}
+      onClose={() => {
+        setSelectedOrder(null);
+      }}
       title={`Đơn hàng #${selectedOrder}`}
       destroyOnClose
       getContainer={false}
@@ -146,8 +175,12 @@ const OrderDrawerChangeStatus = ({
           layout="vertical"
           requiredMark={false}
           validateMessages={validateMessages}
-          onFinish={(values) => handleUpdateOrderStatus(selectedOrder, values)}
-          onValuesChange={handleValuesChange}
+          onFinish={(values) =>
+            values.statusValue === "CANCELLED"
+              ? handleCancelOrderStatus(selectedOrder, values, foundOrderData?.paymentInfo.status)
+              : handleUpdateOrderStatus(selectedOrder, values)
+          }
+          onValuesChange={(changedValue, values) => handleValuesChange(orderLog, values)}
           disabled={["DELIVERED", "CANCELLED"].includes(foundOrderData?.orderStatus.value)}
         >
           <Form.Item

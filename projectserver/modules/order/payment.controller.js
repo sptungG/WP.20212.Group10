@@ -29,17 +29,15 @@ exports.processPayment = async (req, res) => {
 // https://stripe.com/docs/api/refunds/create
 exports.refundPayment = async (req, res) => {
   try {
-    const { _id: userId } = req.user;
-    const foundUser = await User.findById(userId);
-    if (!foundUser) throw { status: 404, message: `Not found user with Id:${userId}!` };
-
     const { orderId } = req.params;
     const foundOrder = await Order.findById(orderId);
     if (!foundOrder) throw { status: 404, message: `Not found order with Id:${orderId}!` };
+    if (String(foundOrder.paymentInfo.status).toUpperCase() === "COD")
+      throw { status: 400, message: `Action denied since OrderId:${orderId} is COD payment!` };
     //
     const refund = await stripe.refunds.create({
       payment_intent: foundOrder.paymentInfo.id,
-      amount: foundOrder.paymentInfo.amount,
+      amount: foundOrder.paymentInfo.amount * 100,
       reason: "requested_by_customer",
     });
 

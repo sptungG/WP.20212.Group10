@@ -14,21 +14,17 @@ const validateMessages = {
 const ModalCancelOrder = ({ selectedOrder = null, setSelectedOrder }) => {
   const [form] = Form.useForm();
   const [cancelMyOrder, { isLoading: cancelMyOrderLoading }] = useCancelMyOrderMutation();
-  const [refundPayment, { isLoading: refundPaymentLoading }] = useRefundPaymentMutation();
-  const isLoading = cancelMyOrderLoading || refundPaymentLoading;
+  const isLoading = cancelMyOrderLoading;
   const handleCancelMyOrder = async (initorder, values) => {
     try {
       message.loading("Đang xử lý...");
       const { orderId, paymentInfo } = initorder;
       const { orderContentNote } = values;
-      if (paymentInfo.status !== "COD") {
-        const refundRes = await refundPayment(orderId).unwrap();
-      }
       const cancelMyOrderRes = await cancelMyOrder({
         orderId,
         initdata: { orderContentNote },
       }).unwrap();
-      message.success("Yêu cầu hủy đơn thành công");
+      message.success("Yêu cầu hủy đơn thành công! Tài khoản của bạn sẽ được hoàn tiền sớm nhất", 4);
       form.resetFields();
       setSelectedOrder(null);
     } catch (err) {

@@ -26,7 +26,7 @@ router.post("/order/cod", authCheck, isAuthenticatedUser, createCashOrder);
 router.put("/admin/order/:orderId", authCheck, adminCheck, updateOrder);
 router.delete("/admin/order/:orderId", authCheck, adminCheck, deleteOrder);
 
-router.post("/refund/:orderId", authCheck, isAuthenticatedUser, refundPayment);
+router.post("/refund/:orderId", authCheck, adminCheck, refundPayment);
 router.post("/create-payment-intent", authCheck, isAuthenticatedUser, processPayment);
 
 module.exports = router;
