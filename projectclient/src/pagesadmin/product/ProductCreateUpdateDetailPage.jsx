@@ -903,7 +903,7 @@ const ProductCreateUpdateDetailPage = () => {
           flexWrap: "nowrap",
           padding: "10px 24px",
         }}
-        getContainer={false}
+        // getContainer={false}
         className="hide-scrollbar"
         extra={
           selectedVariant ? (
@@ -1113,7 +1113,7 @@ const ProductCreateUpdateDetailPage = () => {
         </Popover>
       </Drawer>
       <Modal
-        getContainer={false}
+        // getContainer={false}
         title={"Đường dẫn ảnh"}
         visible={imageUrlVisible}
         okText="Tải lên"

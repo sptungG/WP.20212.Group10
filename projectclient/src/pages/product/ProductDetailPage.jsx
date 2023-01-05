@@ -751,7 +751,7 @@ const ProductDetailPage = () => {
       )}
       <BackTop />
       <Modal
-        getContainer={false}
+        // getContainer={false}
         title={!myReview ? "Đánh giá sản phẩm" : null}
         visible={reviewFormVisible}
         okText="Đăng"
