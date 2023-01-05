@@ -211,6 +211,7 @@ const ProductTableListPage = () => {
                   </Link>
                 </Space>
               }
+              bodyStyle={{ padding: 0 }}
             >
               {getProductsSuccess && (
                 <Table
