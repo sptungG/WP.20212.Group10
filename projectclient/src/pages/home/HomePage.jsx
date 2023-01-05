@@ -1,5 +1,5 @@
 import { Result } from "antd";
-import lodash from "lodash";
+import uniqBy from "lodash/uniqBy";
 import { useEffect, useState } from "react";
 import { AiOutlineSmile } from "react-icons/ai";
 import { BsArrowDown } from "react-icons/bs";
@@ -37,7 +37,7 @@ const HomePage = () => {
       setProductsFiltered(productsFilteredQuery?.data || []);
     } else if (productsFilterValue.page <= productsFilteredQuery?.pagination.totalPage) {
       setProductsFiltered(
-        lodash.uniqBy([...productsFiltered, ...(productsFilteredQuery?.data || [])], "_id")
+        uniqBy([...productsFiltered, ...(productsFilteredQuery?.data || [])], "_id")
       );
     }
   }, [
@@ -54,9 +54,9 @@ const HomePage = () => {
           <InfiniteScroll
             dataLength={productsFilteredQuery?.pagination.total}
             next={() =>
-              setProductsFilterValue((prev) => ({
-                ...prev,
-                page: prev.page + 1,
+              setProductsFilterValue(({ limit, page }) => ({
+                limit,
+                page: page + 1,
               }))
             }
             scrollThreshold="4px"
@@ -71,9 +71,9 @@ const HomePage = () => {
                 <div className="actions">
                   <Button
                     onClick={() =>
-                      setProductsFilterValue((prev) => ({
-                        ...prev,
-                        page: prev.page + 1,
+                      setProductsFilterValue(({ limit, page }) => ({
+                        limit,
+                        page: page + 1,
                       }))
                     }
                     size="large"
@@ -109,19 +109,18 @@ const HomePage = () => {
             </ProductsContainer>
           </InfiniteScroll>
         )}
-        {productsFilteredSuccess && (
-          <ProductDrawerDetail
-            productId={selectedProductId || null}
-            setSelectedProduct={(value) => setSelectedProductId(value)}
-          />
-        )}
       </HomeWrapper>
+      {productsFilteredSuccess && (
+        <ProductDrawerDetail
+          productId={selectedProductId || null}
+          setSelectedProduct={(value) => setSelectedProductId(value)}
+        />
+      )}
     </MainLayout>
   );
 };
 
-const HomeWrapper = styled.div`
-`;
+const HomeWrapper = styled.div``;
 
 const ProductsContainer = styled.div`
   width: 100%;

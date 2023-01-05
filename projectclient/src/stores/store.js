@@ -1,5 +1,5 @@
 import { combineReducers, configureStore, isRejectedWithValue } from "@reduxjs/toolkit";
-// import { loadingBarMiddleware } from "react-redux-loading-bar";
+import { setupListeners } from '@reduxjs/toolkit/query';
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -68,11 +68,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat([
-      rtkQueryErrorLogger,
-      // loadingBarMiddleware({
-      //   promiseTypeSuffixes: ["pending", "fulfilled", "rejected"],
-      // }),
+    }).concat(
       imageApi.middleware,
       addressApi.middleware,
       authApi.middleware,
@@ -87,7 +83,10 @@ export const store = configureStore({
       stripeApi.middleware,
       galleryApi.middleware,
       cascadesApi.middleware,
-    ]),
+      rtkQueryErrorLogger
+    ),
+  devTools: false,
 });
 
 export const persistor = persistStore(store);
+setupListeners(store.dispatch);

@@ -80,9 +80,6 @@ const Header = ({ hideSearch = false }) => {
       window.removeEventListener("resize", handleResize);
     };
   });
-  useLayoutEffect(() => {
-    if (isSignedIn) myCartRefetch();
-  }, [isSignedIn]);
 
   const items = [
     {

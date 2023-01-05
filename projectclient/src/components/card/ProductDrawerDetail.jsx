@@ -74,7 +74,7 @@ const ProductDrawerDetail = ({ productId = null, setSelectedProduct }) => {
   let navigate = useNavigate();
   const [container, setContainer] = useState(null);
   const drawerBodyRef = useRef(null);
-  const { cart, addProductToCart } = useAddToCart();
+  const { cart, addProductToCart, myCartRefetch } = useAddToCart();
   const { isSignedIn, user, message401 } = useAuth();
 
   const { data: productQuery, isSuccess: productQuerySuccess } = useGetProductQuery(productId, {
@@ -135,6 +135,7 @@ const ProductDrawerDetail = ({ productId = null, setSelectedProduct }) => {
       if (!productId || !variant || !quantity) throw new Error("Invalid initdata");
       if (!isSignedIn) return message401();
       const cartRes = await addProductToCart({ productId, variantId: variant, quantity }).unwrap();
+      await myCartRefetch();
       message.success({
         content: (
           <>
@@ -181,7 +182,7 @@ const ProductDrawerDetail = ({ productId = null, setSelectedProduct }) => {
           <Skeleton.Input active block size="small" />
         )
       }
-      getContainer={false}
+      // getContainer={false}
       className="hide-scrollbar"
       footer={
         <FooterWrapper>

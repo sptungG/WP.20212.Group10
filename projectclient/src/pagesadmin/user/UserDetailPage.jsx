@@ -23,7 +23,7 @@ import {
   Typography,
   Upload,
 } from "antd";
-import lodash from "lodash";
+import uniqBy from "lodash/uniqBy";
 import { useEffect, useState } from "react";
 import { AiOutlineInbox, AiOutlineMinus, AiOutlinePlusCircle } from "react-icons/ai";
 import {
@@ -542,7 +542,7 @@ const ProductCreateUpdateDetailPage = () => {
           flexWrap: "nowrap",
           padding: "10px 24px",
         }}
-        getContainer={false}
+        // getContainer={false}
         className="hide-scrollbar"
         extra={
           selectedAddress ? (
@@ -620,7 +620,7 @@ const ProductCreateUpdateDetailPage = () => {
         </Form>
       </Drawer>
       <Modal
-        getContainer={false}
+        // getContainer={false}
         title={"Đường dẫn ảnh"}
         visible={imageUrlVisible}
         okText="Tải lên"

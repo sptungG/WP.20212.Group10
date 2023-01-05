@@ -82,7 +82,7 @@ import TinyAreaChart from "src/components/chart/TinyAreaChart";
 import TinyColumnChart from "src/components/chart/TinyColumnChart";
 import { AiOutlineAreaChart, AiOutlineBarChart } from "react-icons/ai";
 import LocalSearch from "src/components/input/LocalSearch";
-import lodash from "lodash";
+import uniqBy from "lodash/uniqBy";
 import MasonryLayout from "src/components/images/MasonryLayout";
 import { rgba } from "polished";
 import ProductDrawerDetail from "src/components/card/ProductDrawerDetail";
@@ -138,7 +138,7 @@ const ProfilePage = () => {
       .filter((item) => !["CANCELLING", "CANCELLED"].includes(item.orderStatus.value))
       .map((item) => item.totalPrice);
   const statusList =
-    lodash.uniqBy(
+    uniqBy(
       myOrdersList.map((item) => item.orderStatus),
       "value"
     ) || [];

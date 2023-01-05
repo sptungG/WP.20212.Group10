@@ -127,7 +127,7 @@ const ProductCard = ({
           <span>
             <BsStar size={14} />
           </span>
-          <h4>{product.avgRating}</h4>
+          <h4>{product.avgRating.toFixed(2)}</h4>
         </div>
         <div className={classNames("reaction", { active: isWishlisted })}>
           <span>{isWishlisted ? <BsHeartFill size={14} /> : <BsHeart size={14} />}</span>

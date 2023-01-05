@@ -22,7 +22,7 @@ const ReactionChipTags = ({ colorful = true, size = 8, data }) => {
         <span>
           <BsStar size={14} />
         </span>
-        <h4>{avgRating || 0}</h4>
+        <h4>{avgRating.toFixed(2) || 0}</h4>
       </div>
       <div className="reaction">
         <span>

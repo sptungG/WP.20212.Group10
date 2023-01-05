@@ -178,7 +178,7 @@ const UpdateAddressDrawer = ({
         flexWrap: "nowrap",
         padding: "10px 24px",
       }}
-      getContainer={false}
+      // getContainer={false}
       className="hide-scrollbar"
       footer={
         <Space split={<Divider type="vertical" />}>

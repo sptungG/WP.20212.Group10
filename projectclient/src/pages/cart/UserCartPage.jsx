@@ -52,9 +52,6 @@ const UserCartPage = () => {
   const [formApplyCoupon] = Form.useForm();
   const { user, isSignedIn, message401 } = useAuth();
   const { cart, myCartRefetch, addProductToCart, removeProductFromCart } = useAddToCart();
-  useLayoutEffect(() => {
-    myCartRefetch();
-  }, []);
 
   const handleCheckoutCart = () => {
     navigate("/checkout", { replace: true });
@@ -69,6 +66,7 @@ const UserCartPage = () => {
       if (current > 1) {
         message.loading("Đang xử lý...", 3);
         const decRes = await addProductToCart({ productId, variantId, quantity: -1 }).unwrap();
+        await myCartRefetch();
         message.success("Giảm thành công!");
       } else {
         message.loading({
@@ -92,6 +90,8 @@ const UserCartPage = () => {
             } catch (err) {
               message.destroy();
               return;
+            } finally {
+              myCartRefetch();
             }
           },
           duration: 4,
@@ -118,6 +118,8 @@ const UserCartPage = () => {
       message.info("Xóa khỏi giỏ hàng thành công!");
     } catch (err) {
       console.log("err", err);
+    } finally {
+      myCartRefetch();
     }
   };
   const handleApplyCoupon = () => {};

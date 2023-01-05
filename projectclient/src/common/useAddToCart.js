@@ -20,10 +20,15 @@ export function useAddToCart() {
     data: myCartQuery,
     isSuccess: myCartQuerySuccess,
     refetch: myCartRefetch,
-  } = useGetMyCartQuery({}, { skip: !isSignedIn });
-  useEffect(() => {
-    if (isSignedIn && (addProductToCartSuccess || removeProductFromCartSuccess)) myCartRefetch();
-  }, [isSignedIn, addProductToCartSuccess, removeProductFromCartSuccess]);
+  } = useGetMyCartQuery(
+    {},
+    {
+      skip: !isSignedIn,
+      pollingInterval: 600,
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+    }
+  );
 
   // console.log("useAddToCart ~ cart", cart);
 

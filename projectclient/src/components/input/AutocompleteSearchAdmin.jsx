@@ -12,7 +12,7 @@ import {
   Tag,
   Typography,
 } from "antd";
-import lodash from "lodash";
+import uniqBy from "lodash/uniqBy";
 import { useEffect, useRef, useState } from "react";
 import {
   BsArrowUpRight,

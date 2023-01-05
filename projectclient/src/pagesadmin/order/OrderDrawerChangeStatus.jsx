@@ -13,7 +13,8 @@ import {
   Timeline,
   Typography,
 } from "antd";
-import lodash from "lodash";
+import uniqBy from "lodash/uniqBy";
+import reverse from "lodash/reverse";
 import { useEffect, useState } from "react";
 import {
   BsArrowRight,
@@ -53,7 +54,7 @@ const OrderDrawerChangeStatus = ({ setSelectedOrder, selectedOrder = null }) => 
   useEffect(() => {
     if (getOrderSuccess) {
       const { orderStatus, orderLog } = getOrderQuery?.data;
-      const reversedLog = lodash.reverse([...orderLog]);
+      const reversedLog = reverse([...orderLog]);
       setOrderLog(reversedLog);
       form.setFieldsValue({
         statusValue: orderStatus?.value,
@@ -69,7 +70,7 @@ const OrderDrawerChangeStatus = ({ setSelectedOrder, selectedOrder = null }) => 
 
   const handleValuesChange = (currentOrderLog, values) => {
     const { orderLogContent } = values;
-    const newLog = lodash.uniqBy(
+    const newLog = uniqBy(
       [
         {
           _id: "newnewnew",
@@ -137,7 +138,7 @@ const OrderDrawerChangeStatus = ({ setSelectedOrder, selectedOrder = null }) => 
       }}
       title={`Đơn hàng #${selectedOrder}`}
       destroyOnClose
-      getContainer={false}
+      // getContainer={false}
       width={480}
       footer={
         <DrawerFooterWrapper>

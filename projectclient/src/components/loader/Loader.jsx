@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import LogoCube from "../nav/LogoCube";
-import WaterfallLoader from "./WaterfallLoader";
 
 const ModalWrapper = styled.div`
   position: fixed;

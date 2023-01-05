@@ -11,7 +11,7 @@ import {
   Tag,
   Typography,
 } from "antd";
-import lodash from "lodash";
+import uniqBy from "lodash/uniqBy";
 import { useEffect, useRef, useState } from "react";
 import {
   BsArrowUpRight,
@@ -73,7 +73,7 @@ const AutocompleteSearch = ({ width = 480 }) => {
           setProductsFiltered(productsFilteredQuery?.data || []);
         } else if (productsFilterValue.page <= productsFilteredQuery?.pagination.totalPage) {
           setProductsFiltered(
-            lodash.uniqBy([...productsFiltered, ...(productsFilteredQuery?.data || [])], "_id")
+            uniqBy([...productsFiltered, ...(productsFilteredQuery?.data || [])], "_id")
           );
         }
         break;
@@ -83,7 +83,7 @@ const AutocompleteSearch = ({ width = 480 }) => {
           setCombosFiltered(combosFilteredQuery?.data || []);
         } else if (combosFilterValue.page <= combosFilteredQuery?.pagination.totalPage) {
           setCombosFiltered(
-            lodash.uniqBy([...combosFiltered, ...(combosFilteredQuery?.data || [])], "_id")
+            uniqBy([...combosFiltered, ...(combosFilteredQuery?.data || [])], "_id")
           );
         }
         break;
